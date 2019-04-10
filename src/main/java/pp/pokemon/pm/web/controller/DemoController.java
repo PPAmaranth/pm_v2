@@ -1,4 +1,4 @@
-package pp.pokemon.pm.controller;
+package pp.pokemon.pm.web.controller;
 import pp.pokemon.pm.service.BookService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package pp.pokemon.pm.entity;
+package pp.pokemon.pm.dao.entity;
 
 public class Book {
     private Integer id;

@@ -1,6 +1,6 @@
 package pp.pokemon.pm.service;
-import pp.pokemon.pm.entity.Book;
-import pp.pokemon.pm.mapper.BookMapper;
+import pp.pokemon.pm.dao.entity.Book;
+import pp.pokemon.pm.dao.mapper.BookMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
