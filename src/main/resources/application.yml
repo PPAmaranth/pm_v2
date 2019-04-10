@@ -10,3 +10,7 @@ spring:
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+#3.服务器配置
+server:
+  port: 8010
