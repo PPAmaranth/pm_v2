@@ -1,5 +1,5 @@
-package pp.pokemon.pm.controller;
-import pp.pokemon.pm.service.BookService;
+package pp.pokemon.pm.web.controller;
+import pp.pokemon.pm.service.book.impl.BookServiceImpl;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +12,7 @@ public class DemoController {
     private static Gson gson = new Gson();
 
     @Autowired
-    private BookService bookService;
+    private BookServiceImpl bookService;
 
 
     @RequestMapping("/getBook/{id}")

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="pp.pokemon.pm.mapper.BookMapper">
+<mapper namespace="pp.pokemon.pm.dao.mapper.BookMapper">
 
-    <resultMap id="BaseResultMap" type="Book">
+    <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.Book">
     <result column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="author" jdbcType="VARCHAR" property="author" />
@@ -11,7 +11,7 @@
     </resultMap>
 
 
-    <insert id="insert" parameterType="Book">
+    <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.Book">
     insert into book (id, name, author,
     price)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR},

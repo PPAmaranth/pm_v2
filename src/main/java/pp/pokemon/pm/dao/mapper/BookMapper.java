@@ -1,7 +1,6 @@
-package pp.pokemon.pm.mapper;
+package pp.pokemon.pm.dao.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
-import pp.pokemon.pm.entity.Book;
+import pp.pokemon.pm.dao.entity.Book;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

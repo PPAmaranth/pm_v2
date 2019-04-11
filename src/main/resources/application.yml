@@ -2,7 +2,7 @@
 #1.加载MyBatis配置文件
 mybatis:
   mapper-locations: mapper/*.xml
-  type-aliases-package: pp.pokemon.pm.entity
+  ## type-aliases-package: pp.pokemon.pm.entity
 #2.数据库配置
 spring:
   datasource:
@@ -10,3 +10,7 @@ spring:
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+#3.服务器配置
+server:
+  port: 8010
