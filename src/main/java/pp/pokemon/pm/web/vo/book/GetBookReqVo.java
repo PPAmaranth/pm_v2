@@ -5,5 +5,6 @@ import lombok.Data;
 @Data
 public class GetBookReqVo {
 
-    private Integer id;
+    private int id;
+
 }
