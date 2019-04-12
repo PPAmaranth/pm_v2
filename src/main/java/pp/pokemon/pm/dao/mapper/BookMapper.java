@@ -7,7 +7,9 @@ import java.util.List;
 public interface BookMapper {
 
     int insert(Book record);
+
     List<Book> selectAll();
-    Book getById(@Param(value = "id") Integer id);
+
+    Book getById(@Param("id") Integer id);
 
 }
