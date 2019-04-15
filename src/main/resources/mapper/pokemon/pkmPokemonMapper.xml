@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pp.pokemon.pm.dao.mapper.pokemon.pkmPokemonMapper">
+  <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.pkmPokemon">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="illustration_book_id" jdbcType="INTEGER" property="illustrationBookId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="jp_name" jdbcType="VARCHAR" property="jpName" />
+    <result column="en_name" jdbcType="VARCHAR" property="enName" />
+    <result column="hp" jdbcType="INTEGER" property="hp" />
+    <result column="attack" jdbcType="INTEGER" property="attack" />
+    <result column="defense" jdbcType="INTEGER" property="defense" />
+    <result column="s_attack" jdbcType="INTEGER" property="sAttack" />
+    <result column="s_defense" jdbcType="INTEGER" property="sDefense" />
+    <result column="property_one" jdbcType="INTEGER" property="propertyOne" />
+    <result column="property_two" jdbcType="INTEGER" property="propertyTwo" />
+    <result column="speed" jdbcType="INTEGER" property="speed" />
+    <result column="ethnic_value" jdbcType="INTEGER" property="ethnicValue" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, illustration_book_id, name, jp_name, en_name, hp, attack, defense, s_attack, 
+    s_defense, property_one, property_two, speed, ethnic_value
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pkm_pokemon
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from pkm_pokemon
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.pkmPokemon">
+    insert into pkm_pokemon (id, illustration_book_id, name, 
+      jp_name, en_name, hp, 
+      attack, defense, s_attack, 
+      s_defense, property_one, property_two, 
+      speed, ethnic_value)
+    values (#{id,jdbcType=INTEGER}, #{illustrationBookId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{jpName,jdbcType=VARCHAR}, #{enName,jdbcType=VARCHAR}, #{hp,jdbcType=INTEGER}, 
+      #{attack,jdbcType=INTEGER}, #{defense,jdbcType=INTEGER}, #{sAttack,jdbcType=INTEGER}, 
+      #{sDefense,jdbcType=INTEGER}, #{propertyOne,jdbcType=INTEGER}, #{propertyTwo,jdbcType=INTEGER}, 
+      #{speed,jdbcType=INTEGER}, #{ethnicValue,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.pkmPokemon">
+    insert into pkm_pokemon
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="illustrationBookId != null">
+        illustration_book_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="jpName != null">
+        jp_name,
+      </if>
+      <if test="enName != null">
+        en_name,
+      </if>
+      <if test="hp != null">
+        hp,
+      </if>
+      <if test="attack != null">
+        attack,
+      </if>
+      <if test="defense != null">
+        defense,
+      </if>
+      <if test="sAttack != null">
+        s_attack,
+      </if>
+      <if test="sDefense != null">
+        s_defense,
+      </if>
+      <if test="propertyOne != null">
+        property_one,
+      </if>
+      <if test="propertyTwo != null">
+        property_two,
+      </if>
+      <if test="speed != null">
+        speed,
+      </if>
+      <if test="ethnicValue != null">
+        ethnic_value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="illustrationBookId != null">
+        #{illustrationBookId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="jpName != null">
+        #{jpName,jdbcType=VARCHAR},
+      </if>
+      <if test="enName != null">
+        #{enName,jdbcType=VARCHAR},
+      </if>
+      <if test="hp != null">
+        #{hp,jdbcType=INTEGER},
+      </if>
+      <if test="attack != null">
+        #{attack,jdbcType=INTEGER},
+      </if>
+      <if test="defense != null">
+        #{defense,jdbcType=INTEGER},
+      </if>
+      <if test="sAttack != null">
+        #{sAttack,jdbcType=INTEGER},
+      </if>
+      <if test="sDefense != null">
+        #{sDefense,jdbcType=INTEGER},
+      </if>
+      <if test="propertyOne != null">
+        #{propertyOne,jdbcType=INTEGER},
+      </if>
+      <if test="propertyTwo != null">
+        #{propertyTwo,jdbcType=INTEGER},
+      </if>
+      <if test="speed != null">
+        #{speed,jdbcType=INTEGER},
+      </if>
+      <if test="ethnicValue != null">
+        #{ethnicValue,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.pkmPokemon">
+    update pkm_pokemon
+    <set>
+      <if test="illustrationBookId != null">
+        illustration_book_id = #{illustrationBookId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="jpName != null">
+        jp_name = #{jpName,jdbcType=VARCHAR},
+      </if>
+      <if test="enName != null">
+        en_name = #{enName,jdbcType=VARCHAR},
+      </if>
+      <if test="hp != null">
+        hp = #{hp,jdbcType=INTEGER},
+      </if>
+      <if test="attack != null">
+        attack = #{attack,jdbcType=INTEGER},
+      </if>
+      <if test="defense != null">
+        defense = #{defense,jdbcType=INTEGER},
+      </if>
+      <if test="sAttack != null">
+        s_attack = #{sAttack,jdbcType=INTEGER},
+      </if>
+      <if test="sDefense != null">
+        s_defense = #{sDefense,jdbcType=INTEGER},
+      </if>
+      <if test="propertyOne != null">
+        property_one = #{propertyOne,jdbcType=INTEGER},
+      </if>
+      <if test="propertyTwo != null">
+        property_two = #{propertyTwo,jdbcType=INTEGER},
+      </if>
+      <if test="speed != null">
+        speed = #{speed,jdbcType=INTEGER},
+      </if>
+      <if test="ethnicValue != null">
+        ethnic_value = #{ethnicValue,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.pkmPokemon">
+    update pkm_pokemon
+    set illustration_book_id = #{illustrationBookId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      jp_name = #{jpName,jdbcType=VARCHAR},
+      en_name = #{enName,jdbcType=VARCHAR},
+      hp = #{hp,jdbcType=INTEGER},
+      attack = #{attack,jdbcType=INTEGER},
+      defense = #{defense,jdbcType=INTEGER},
+      s_attack = #{sAttack,jdbcType=INTEGER},
+      s_defense = #{sDefense,jdbcType=INTEGER},
+      property_one = #{propertyOne,jdbcType=INTEGER},
+      property_two = #{propertyTwo,jdbcType=INTEGER},
+      speed = #{speed,jdbcType=INTEGER},
+      ethnic_value = #{ethnicValue,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
