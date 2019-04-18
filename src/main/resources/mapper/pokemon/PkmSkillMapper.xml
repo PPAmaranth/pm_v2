@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="pp.pokemon.pm.dao.mapper.pokemon.pkmSkillMapper">
-  <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.pkmSkill">
+<mapper namespace="pp.pokemon.pm.dao.mapper.pokemon.PkmSkillMapper">
+  <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.PkmSkill">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="cn_name" jdbcType="VARCHAR" property="cnName" />
     <result column="jp_name" jdbcType="VARCHAR" property="jpName" />
@@ -26,7 +26,7 @@
     delete from pkm_skill
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.pkmSkill">
+  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmSkill">
     insert into pkm_skill (id, cn_name, jp_name, 
       en_name, property, classification, 
       power, hit_probability, PP
@@ -36,7 +36,7 @@
       #{power,jdbcType=INTEGER}, #{hitProbability,jdbcType=INTEGER}, #{pp,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.pkmSkill">
+  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmSkill">
     insert into pkm_skill
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -97,7 +97,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.pkmSkill">
+  <update id="updateByPrimaryKeySelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmSkill">
     update pkm_skill
     <set>
       <if test="cnName != null">
@@ -127,7 +127,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.pkmSkill">
+  <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmSkill">
     update pkm_skill
     set cn_name = #{cnName,jdbcType=VARCHAR},
       jp_name = #{jpName,jdbcType=VARCHAR},
