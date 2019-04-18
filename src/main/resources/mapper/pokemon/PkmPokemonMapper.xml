@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="pp.pokemon.pm.dao.mapper.pokemon.pkmPokemonMapper">
-  <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.pkmPokemon">
+<mapper namespace="pp.pokemon.pm.dao.mapper.pokemon.PkmPokemonMapper">
+  <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.PkmPokemon">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="illustration_book_id" jdbcType="INTEGER" property="illustrationBookId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -31,7 +31,7 @@
     delete from pkm_pokemon
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.pkmPokemon">
+  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmPokemon">
     insert into pkm_pokemon (id, illustration_book_id, name, 
       jp_name, en_name, hp, 
       attack, defense, s_attack, 
@@ -43,7 +43,7 @@
       #{sDefense,jdbcType=INTEGER}, #{propertyOne,jdbcType=INTEGER}, #{propertyTwo,jdbcType=INTEGER}, 
       #{speed,jdbcType=INTEGER}, #{ethnicValue,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.pkmPokemon">
+  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmPokemon">
     insert into pkm_pokemon
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -134,7 +134,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.pkmPokemon">
+  <update id="updateByPrimaryKeySelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmPokemon">
     update pkm_pokemon
     <set>
       <if test="illustrationBookId != null">
@@ -179,7 +179,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.pkmPokemon">
+  <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmPokemon">
     update pkm_pokemon
     set illustration_book_id = #{illustrationBookId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
