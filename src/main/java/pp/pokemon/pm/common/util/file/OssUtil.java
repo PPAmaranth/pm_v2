@@ -4,10 +4,19 @@ import com.aliyun.oss.OSSClient;
 import com.github.pagehelper.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import pp.pokemon.pm.common.constant.RetException;
+import pp.pokemon.pm.common.message.FileMessage;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class OssUtil {
 
     private static Logger logger= LoggerFactory.getLogger(OssUtil.class);
+
+    private static String uploadFileFormat = "ppt,pptx,pdf,xls,xlsx,doc,docx,txt,rtf,jpg,jpeg,png,gif,tiff,bmp,zip,rar,mp3,7z";
+
     /**
      * 获取对应的访问地址(url)
      *
@@ -33,12 +42,19 @@ public class OssUtil {
     public static String getSuffix(String fileName) {
         String suffix = "";
         if (StringUtil.isNotEmpty(fileName)) {
-            suffix = fileName.substring(fileName.lastIndexOf("."));
+            suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
         }
         return suffix;
     }
 
-    public static void main(String[] args) {
-        System.out.println(OssUtil.getSuffix("https://pp-pokemon.oss-cn-shenzhen.aliyuncs.com/%E7%99%BB%E5%93%A5.jpg"));
+
+    public static void suffixFilter(String fileName) {
+        String fileSuffix = getSuffix(fileName);
+        long count = Arrays.stream(uploadFileFormat.split(","))
+                .filter(suffix -> suffix.equals(fileSuffix))
+                .count();
+        if (0 == count) {
+            throw new RetException(FileMessage.INVALID_ATTACHMENT_SUFFIX_CODE, FileMessage.INVALID_ATTACHMENT_SUFFIX_MSG);
+        }
     }
 }

@@ -7,7 +7,7 @@
     <result column="file_name" jdbcType="VARCHAR" property="fileName" />
     <result column="ori_name" jdbcType="VARCHAR" property="oriName" />
     <result column="suffix" jdbcType="VARCHAR" property="suffix" />
-    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="type" jdbcType="INTEGER" property="type" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -28,7 +28,7 @@
       ori_name, suffix, type, 
       create_date)
     values (#{id,jdbcType=INTEGER}, #{filePath,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, 
-      #{oriName,jdbcType=VARCHAR}, #{suffix,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{oriName,jdbcType=VARCHAR}, #{suffix,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
       #{createDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment" useGeneratedKeys="true" keyProperty="id">
@@ -73,7 +73,7 @@
         #{suffix,jdbcType=VARCHAR},
       </if>
       <if test="type != null">
-        #{type,jdbcType=VARCHAR},
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
@@ -96,7 +96,7 @@
         suffix = #{suffix,jdbcType=VARCHAR},
       </if>
       <if test="type != null">
-        type = #{type,jdbcType=VARCHAR},
+        type = #{type,jdbcType=INTEGER},
       </if>
       <if test="createDate != null">
         create_date = #{createDate,jdbcType=TIMESTAMP},
@@ -110,7 +110,7 @@
       file_name = #{fileName,jdbcType=VARCHAR},
       ori_name = #{oriName,jdbcType=VARCHAR},
       suffix = #{suffix,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
       create_date = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>

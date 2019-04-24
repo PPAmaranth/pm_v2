@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 
 public class PkmAttachment {
-    private Integer id;
+    private Integer ;
 
     private String filePath;
 
@@ -15,7 +15,7 @@ public class PkmAttachment {
 
     private String suffix;
 
-    private String type;
+    private Integer type;
 
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
     private Date createDate;
@@ -60,11 +60,11 @@ public class PkmAttachment {
         this.suffix = suffix;
     }
 
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
