@@ -33,19 +33,7 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
-        <table tableName="pkm_pokemon" domainObjectName="PkmPokemon"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false" />
-        <table tableName="pkm_ability" domainObjectName="PkmAbility"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false" />
-        <table tableName="pkm_skill" domainObjectName="PkmSkill"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false" />
-        <table tableName="pkm_property" domainObjectName="PkmProperty"
+        <table tableName="pkm_attachment" domainObjectName="PkmAttachment"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false" />

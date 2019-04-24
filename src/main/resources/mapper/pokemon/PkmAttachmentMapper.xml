@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pp.pokemon.pm.dao.mapper.pokemon.PkmAttachmentMapper">
+  <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="ori_name" jdbcType="VARCHAR" property="oriName" />
+    <result column="suffix" jdbcType="VARCHAR" property="suffix" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, file_path, file_name, ori_name, suffix, type, create_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pkm_attachment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from pkm_attachment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment" useGeneratedKeys="true" keyProperty="id">
+    insert into pkm_attachment (id, file_path, file_name, 
+      ori_name, suffix, type, 
+      create_date)
+    values (#{id,jdbcType=INTEGER}, #{filePath,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, 
+      #{oriName,jdbcType=VARCHAR}, #{suffix,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment" useGeneratedKeys="true" keyProperty="id">
+    insert into pkm_attachment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="filePath != null">
+        file_path,
+      </if>
+      <if test="fileName != null">
+        file_name,
+      </if>
+      <if test="oriName != null">
+        ori_name,
+      </if>
+      <if test="suffix != null">
+        suffix,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="filePath != null">
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null">
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="oriName != null">
+        #{oriName,jdbcType=VARCHAR},
+      </if>
+      <if test="suffix != null">
+        #{suffix,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment">
+    update pkm_attachment
+    <set>
+      <if test="filePath != null">
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null">
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="oriName != null">
+        ori_name = #{oriName,jdbcType=VARCHAR},
+      </if>
+      <if test="suffix != null">
+        suffix = #{suffix,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment">
+    update pkm_attachment
+    set file_path = #{filePath,jdbcType=VARCHAR},
+      file_name = #{fileName,jdbcType=VARCHAR},
+      ori_name = #{oriName,jdbcType=VARCHAR},
+      suffix = #{suffix,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

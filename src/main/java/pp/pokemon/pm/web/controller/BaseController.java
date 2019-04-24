@@ -28,5 +28,4 @@ public class BaseController {
         return new DefaultApiResult(code, msg);
     }
 
-
 }

@@ -3,8 +3,9 @@ package pp.pokemon.pm.common.util.file;
 import com.aliyun.oss.ClientConfiguration;
 import com.aliyun.oss.OSSClient;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class AliyunOssClientFactory {
 
     //private static AliOssClientFactory instance;
