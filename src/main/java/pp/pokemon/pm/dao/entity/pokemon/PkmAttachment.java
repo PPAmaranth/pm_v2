@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 
 public class PkmAttachment {
-    private Integer ;
+    private Integer id;
 
     private String filePath;
 
