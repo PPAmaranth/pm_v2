@@ -155,10 +155,6 @@ public class FileServiceImpl implements FileService {
      */
     @Override
     public List<PkmAttachment> batchDeletePublicFiles(BatchFilesReqVo reqVo) {
-        // 入参不为空或空list时才进行删除操作
-        if (CollectionUtils.isEmpty(reqVo.getList())) {
-            return new ArrayList<>();
-        }
 
         // 根据入参获得所有文件
         List<PkmAttachment> attachments = attachmentMapper.queryPublicAttachmentByIds(reqVo.getList());
