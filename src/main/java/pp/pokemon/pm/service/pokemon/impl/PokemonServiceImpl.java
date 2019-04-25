@@ -10,7 +10,7 @@ import pp.pokemon.pm.dao.entity.pokemon.PkmPokemon;
 import pp.pokemon.pm.dao.mapper.pokemon.PkmPokemonMapper;
 import pp.pokemon.pm.service.pokemon.PokemonService;
 import pp.pokemon.pm.web.vo.pokemon.BatchInsertPokemonVo;
-import pp.pokemon.pm.web.vo.pokemon.QueryAllReqVo;
+import pp.pokemon.pm.web.vo.pokemon.QueryAllReqWithPageVo;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class PokemonServiceImpl implements PokemonService {
     private PkmPokemonMapper pkmPokemonMapper;
 
     @Override
-    public PageInfo<PkmPokemon> queryAll(QueryAllReqVo reqVo) {
+    public PageInfo<PkmPokemon> queryAll(QueryAllReqWithPageVo reqVo) {
         PageHelper.startPage(reqVo.getPageNum(), reqVo.getPageSize());
         List<PkmPokemon> list = pkmPokemonMapper.queryAll(reqVo);
         PageInfo<PkmPokemon> pageInfo = new PageInfo<>(list);

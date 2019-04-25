@@ -196,7 +196,7 @@
       ethnic_value = #{ethnicValue,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="queryAll" parameterType="pp.pokemon.pm.web.vo.pokemon.QueryAllReqVo" resultMap="BaseResultMap">
+  <select id="queryAll" parameterType="pp.pokemon.pm.web.vo.pokemon.QueryAllReqWithPageVo" resultMap="BaseResultMap">
     select
       <include refid="Base_Column_List" />
     from pkm_pokemon

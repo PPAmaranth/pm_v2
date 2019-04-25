@@ -6,7 +6,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 @Data
-public class BaseWithPageReqVo {
+public class BaseReqWithPageVo {
 
     @Min(value = 1, message = "取值1~2147483647")
     @Max(value = 2147483647, message = "取值1~2147483647")

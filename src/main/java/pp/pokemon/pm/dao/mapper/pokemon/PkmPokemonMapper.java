@@ -1,7 +1,7 @@
 package pp.pokemon.pm.dao.mapper.pokemon;
 
 import pp.pokemon.pm.dao.entity.pokemon.PkmPokemon;
-import pp.pokemon.pm.web.vo.pokemon.QueryAllReqVo;
+import pp.pokemon.pm.web.vo.pokemon.QueryAllReqWithPageVo;
 
 import java.util.List;
 
@@ -18,5 +18,5 @@ public interface PkmPokemonMapper {
 
     int updateByPrimaryKey(PkmPokemon record);
 
-    List<PkmPokemon> queryAll(QueryAllReqVo reqVo);
+    List<PkmPokemon> queryAll(QueryAllReqWithPageVo reqVo);
 }

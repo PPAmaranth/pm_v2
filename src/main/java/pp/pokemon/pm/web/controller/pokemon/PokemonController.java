@@ -9,7 +9,7 @@ import pp.pokemon.pm.service.pokemon.PokemonService;
 import pp.pokemon.pm.web.controller.BaseController;
 import pp.pokemon.pm.web.vo.base.DefaultApiResult;
 import pp.pokemon.pm.web.vo.pokemon.BatchInsertPokemonVo;
-import pp.pokemon.pm.web.vo.pokemon.QueryAllReqVo;
+import pp.pokemon.pm.web.vo.pokemon.QueryAllReqWithPageVo;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class PokemonController extends BaseController {
     private PokemonService pokemonService;
 
     @RequestMapping(value = "/queryAll", method = {RequestMethod.POST})
-    public DefaultApiResult queryAll(@RequestBody QueryAllReqVo reqVo){
+    public DefaultApiResult queryAll(@RequestBody QueryAllReqWithPageVo reqVo){
         return success(pokemonService.queryAll(reqVo));
     }
 

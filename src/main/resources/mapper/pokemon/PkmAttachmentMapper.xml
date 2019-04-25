@@ -114,4 +114,24 @@
       create_date = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="queryAllPublicAttachment" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from pkm_attachment
+    where type = 1
+  </select>
+  <select id="queryPublicAttachmentByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+    elect
+    <include refid="Base_Column_List" />
+    from pkm_attachment
+    <where>
+      type = 1
+      <if test="ids != null">
+        and id in
+          <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+          </foreach>
+      </if>
+    </where>
+  </select>
 </mapper>

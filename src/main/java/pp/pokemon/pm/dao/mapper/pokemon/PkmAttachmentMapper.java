@@ -1,6 +1,9 @@
 package pp.pokemon.pm.dao.mapper.pokemon;
 
+import org.apache.ibatis.annotations.Param;
 import pp.pokemon.pm.dao.entity.pokemon.PkmAttachment;
+
+import java.util.List;
 
 public interface PkmAttachmentMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +17,8 @@ public interface PkmAttachmentMapper {
     int updateByPrimaryKeySelective(PkmAttachment record);
 
     int updateByPrimaryKey(PkmAttachment record);
+
+    List<PkmAttachment> queryAllPublicAttachment();
+
+    List<PkmAttachment> queryPublicAttachmentByIds(@Param("ids")List<Integer> ids);
 }

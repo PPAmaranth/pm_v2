@@ -1,5 +1,7 @@
 package pp.pokemon.pm.service.util.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -9,12 +11,15 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import pp.pokemon.pm.common.constant.RetException;
 import pp.pokemon.pm.common.enums.file.DownloadType;
 import pp.pokemon.pm.common.message.FileMessage;
+import pp.pokemon.pm.common.util.file.DeleteObject;
 import pp.pokemon.pm.common.util.file.OssUtil;
 import pp.pokemon.pm.common.util.file.PutObject;
 import pp.pokemon.pm.dao.entity.pokemon.PkmAttachment;
 import pp.pokemon.pm.dao.mapper.pokemon.PkmAttachmentMapper;
 import pp.pokemon.pm.service.util.FileService;
-import pp.pokemon.pm.web.vo.file.PublicDownloadReqVo;
+import pp.pokemon.pm.web.vo.base.BaseReqWithPageVo;
+import pp.pokemon.pm.web.vo.file.BatchFilesReqVo;
+import pp.pokemon.pm.web.vo.file.FileReqVo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -22,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -29,6 +35,9 @@ public class FileServiceImpl implements FileService {
 
     @Autowired
     private PutObject putObject;
+
+    @Autowired
+    private DeleteObject deleteObject;
 
     @Autowired
     private PkmAttachmentMapper attachmentMapper;
@@ -112,8 +121,63 @@ public class FileServiceImpl implements FileService {
      *  公有下载
      */
     @Override
-    public PkmAttachment publicDownload(PublicDownloadReqVo reqVo) {
-        return Optional.ofNullable(attachmentMapper.selectByPrimaryKey(reqVo.getId()))
+    public PkmAttachment publicDownload(FileReqVo reqVo) {
+        return getPubAttachment(reqVo.getId());
+    }
+
+    /**
+     *  公有附件列表
+     */
+    @Override
+    public PageInfo<PkmAttachment> publicFileList(BaseReqWithPageVo req) {
+        PageHelper.startPage(req.getPageNum(), req.getPageSize());
+        List<PkmAttachment> list = attachmentMapper.queryAllPublicAttachment();
+        return new PageInfo<>(list);
+    }
+
+    /**
+     *  单个公有附件删除
+     */
+    @Override
+    public void publicFileDelete(FileReqVo reqVo) {
+        // 验参: 附件存在
+        PkmAttachment attachment = getPubAttachment(reqVo.getId());
+
+        // 删除oss上对应的文件
+        deleteObject.deleteObject(publicBucketName, attachment.getOriName());
+
+        // 删除数据库中对应的数据
+        attachmentMapper.deleteByPrimaryKey(attachment.getId());
+    }
+
+    /**
+     *  批量公有附件删除
+     */
+    @Override
+    public List<PkmAttachment> batchDeletePublicFiles(BatchFilesReqVo reqVo) {
+        // 入参不为空或空list时才进行删除操作
+        if (CollectionUtils.isEmpty(reqVo.getList())) {
+            return new ArrayList<>();
+        }
+
+        // 根据入参获得所有文件
+        List<PkmAttachment> attachments = attachmentMapper.queryPublicAttachmentByIds(reqVo.getList());
+        List<String> keys = attachments.stream()
+                .map(PkmAttachment::getOriName)
+                .collect(Collectors.toList());
+
+        // oss批量删除, 返回未被删除的文件名列表
+        List<String> undeletedKeys = deleteObject.batchDeleteObject(publicBucketName, keys, true);
+
+        // 根据文件名返回所有未被删除的文件
+        List<PkmAttachment> undeletedAttachments = attachments.stream()
+                .filter(attachment -> undeletedKeys.contains(attachment.getOriName()))
+                .collect(Collectors.toList());
+        return undeletedAttachments;
+    }
+
+    private PkmAttachment getPubAttachment(Integer id) {
+        return Optional.ofNullable(attachmentMapper.selectByPrimaryKey(id))
                 .filter(pkmAttachment -> pkmAttachment.getType().equals(DownloadType.PUBLIC.getType()))
                 .orElseThrow(() -> new RetException(FileMessage.INVALID_ATTACHMENT_CODE, FileMessage.INVALID_ATTACHMENT_MSG));
     }
