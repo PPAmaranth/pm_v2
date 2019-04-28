@@ -10,11 +10,11 @@
     <result column="suffix" jdbcType="VARCHAR" property="suffix" />
     <result column="download_type" jdbcType="INTEGER" property="downloadType" />
     <result column="module" jdbcType="INTEGER" property="module" />
-    <result column="module" jdbcType="INTEGER" property="module" />
+    <result column="type" jdbcType="INTEGER" property="type" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, file_uri, file_path, file_name, ori_name, suffix, download_type, module, module,
+    id, file_uri, file_path, file_name, ori_name, suffix, download_type, module, type,
     create_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -27,17 +27,17 @@
     delete from pkm_attachment
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment">
+  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment" useGeneratedKeys="true" keyProperty="id">
     insert into pkm_attachment (id, file_uri, file_path, 
       file_name, ori_name, suffix, 
-      download_type, module, module,
+      download_type, module, type,
       create_date)
     values (#{id,jdbcType=INTEGER}, #{fileUri,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, 
       #{fileName,jdbcType=VARCHAR}, #{oriName,jdbcType=VARCHAR}, #{suffix,jdbcType=VARCHAR}, 
-      #{downloadType,jdbcType=INTEGER}, #{module,jdbcType=INTEGER}, #{module,jdbcType=INTEGER},
+      #{downloadType,jdbcType=INTEGER}, #{module,jdbcType=INTEGER}, #{type,jdbcType=INTEGER},
       #{createDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment">
+  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment" useGeneratedKeys="true" keyProperty="id">
     insert into pkm_attachment
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -64,8 +64,8 @@
       <if test="module != null">
         module,
       </if>
-      <if test="module != null">
-        module,
+      <if test="type != null">
+        type,
       </if>
       <if test="createDate != null">
         create_date,
@@ -96,8 +96,8 @@
       <if test="module != null">
         #{module,jdbcType=INTEGER},
       </if>
-      <if test="module != null">
-        #{module,jdbcType=INTEGER},
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
@@ -128,8 +128,8 @@
       <if test="module != null">
         module = #{module,jdbcType=INTEGER},
       </if>
-      <if test="module != null">
-        module = #{module,jdbcType=INTEGER},
+      <if test="type != null">
+        type = #{module,jdbcType=INTEGER},
       </if>
       <if test="createDate != null">
         create_date = #{createDate,jdbcType=TIMESTAMP},
@@ -146,7 +146,7 @@
       suffix = #{suffix,jdbcType=VARCHAR},
       download_type = #{downloadType,jdbcType=INTEGER},
       module = #{module,jdbcType=INTEGER},
-      module = #{module,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
       create_date = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
