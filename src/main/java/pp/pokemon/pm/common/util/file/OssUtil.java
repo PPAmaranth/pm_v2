@@ -76,13 +76,13 @@ public class OssUtil {
         StringBuilder sb = new StringBuilder();
         if (StringUtil.isNotEmpty(module)) {
             Map<Integer, String> map = FileModule.getMap();
-            String str = Optional.ofNullable(map.get(module))
+            String str = Optional.ofNullable(map.get(Integer.valueOf(module)))
                     .orElseThrow(() -> new RetException(FileMessage.INVALID_FILE_MODULE_CODE, FileMessage.INVALID_FILE_MODULE_MSG));
             sb.append(str);
         }
         if (StringUtil.isNotEmpty(type)) {
             Map<Integer, String> map = FileType.getMap();
-            String str = Optional.ofNullable(map.get(type))
+            String str = Optional.ofNullable(map.get(Integer.valueOf(type)))
                     .orElseThrow(() -> new RetException(FileMessage.INVALID_FILE_TYPE_CODE, FileMessage.INVALID_FILE_TYPE_MSG));
             sb.append(str);
         }

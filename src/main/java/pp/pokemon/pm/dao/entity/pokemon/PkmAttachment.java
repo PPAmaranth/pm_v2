@@ -23,7 +23,7 @@ public class PkmAttachment {
 
     private Integer type;
 
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createDate;
 
     public Integer getId() {
