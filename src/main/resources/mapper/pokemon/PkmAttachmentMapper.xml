@@ -3,15 +3,19 @@
 <mapper namespace="pp.pokemon.pm.dao.mapper.pokemon.PkmAttachmentMapper">
   <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="file_uri" jdbcType="VARCHAR" property="fileUri" />
     <result column="file_path" jdbcType="VARCHAR" property="filePath" />
     <result column="file_name" jdbcType="VARCHAR" property="fileName" />
     <result column="ori_name" jdbcType="VARCHAR" property="oriName" />
     <result column="suffix" jdbcType="VARCHAR" property="suffix" />
-    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="download_type" jdbcType="INTEGER" property="downloadType" />
+    <result column="module" jdbcType="INTEGER" property="module" />
+    <result column="module" jdbcType="INTEGER" property="module" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, file_path, file_name, ori_name, suffix, type, create_date
+    id, file_uri, file_path, file_name, ori_name, suffix, download_type, module, module,
+    create_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -23,19 +27,24 @@
     delete from pkm_attachment
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment" useGeneratedKeys="true" keyProperty="id">
-    insert into pkm_attachment (id, file_path, file_name, 
-      ori_name, suffix, type, 
+  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment">
+    insert into pkm_attachment (id, file_uri, file_path, 
+      file_name, ori_name, suffix, 
+      download_type, module, module,
       create_date)
-    values (#{id,jdbcType=INTEGER}, #{filePath,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, 
-      #{oriName,jdbcType=VARCHAR}, #{suffix,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
+    values (#{id,jdbcType=INTEGER}, #{fileUri,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, 
+      #{fileName,jdbcType=VARCHAR}, #{oriName,jdbcType=VARCHAR}, #{suffix,jdbcType=VARCHAR}, 
+      #{downloadType,jdbcType=INTEGER}, #{module,jdbcType=INTEGER}, #{module,jdbcType=INTEGER},
       #{createDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment">
     insert into pkm_attachment
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="fileUri != null">
+        file_uri,
       </if>
       <if test="filePath != null">
         file_path,
@@ -49,8 +58,14 @@
       <if test="suffix != null">
         suffix,
       </if>
-      <if test="type != null">
-        type,
+      <if test="downloadType != null">
+        download_type,
+      </if>
+      <if test="module != null">
+        module,
+      </if>
+      <if test="module != null">
+        module,
       </if>
       <if test="createDate != null">
         create_date,
@@ -59,6 +74,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=INTEGER},
+      </if>
+      <if test="fileUri != null">
+        #{fileUri,jdbcType=VARCHAR},
       </if>
       <if test="filePath != null">
         #{filePath,jdbcType=VARCHAR},
@@ -72,8 +90,14 @@
       <if test="suffix != null">
         #{suffix,jdbcType=VARCHAR},
       </if>
-      <if test="type != null">
-        #{type,jdbcType=INTEGER},
+      <if test="downloadType != null">
+        #{downloadType,jdbcType=INTEGER},
+      </if>
+      <if test="module != null">
+        #{module,jdbcType=INTEGER},
+      </if>
+      <if test="module != null">
+        #{module,jdbcType=INTEGER},
       </if>
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
@@ -83,6 +107,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment">
     update pkm_attachment
     <set>
+      <if test="fileUri != null">
+        file_uri = #{fileUri,jdbcType=VARCHAR},
+      </if>
       <if test="filePath != null">
         file_path = #{filePath,jdbcType=VARCHAR},
       </if>
@@ -95,8 +122,14 @@
       <if test="suffix != null">
         suffix = #{suffix,jdbcType=VARCHAR},
       </if>
-      <if test="type != null">
-        type = #{type,jdbcType=INTEGER},
+      <if test="downloadType != null">
+        download_type = #{downloadType,jdbcType=INTEGER},
+      </if>
+      <if test="module != null">
+        module = #{module,jdbcType=INTEGER},
+      </if>
+      <if test="module != null">
+        module = #{module,jdbcType=INTEGER},
       </if>
       <if test="createDate != null">
         create_date = #{createDate,jdbcType=TIMESTAMP},
@@ -106,11 +139,14 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment">
     update pkm_attachment
-    set file_path = #{filePath,jdbcType=VARCHAR},
+    set file_uri = #{fileUri,jdbcType=VARCHAR},
+      file_path = #{filePath,jdbcType=VARCHAR},
       file_name = #{fileName,jdbcType=VARCHAR},
       ori_name = #{oriName,jdbcType=VARCHAR},
       suffix = #{suffix,jdbcType=VARCHAR},
-      type = #{type,jdbcType=INTEGER},
+      download_type = #{downloadType,jdbcType=INTEGER},
+      module = #{module,jdbcType=INTEGER},
+      module = #{module,jdbcType=INTEGER},
       create_date = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -118,19 +154,19 @@
     select
     <include refid="Base_Column_List" />
     from pkm_attachment
-    where type = 1
+    where download_type = 0
   </select>
   <select id="queryPublicAttachmentByIds" resultMap="BaseResultMap" parameterType="java.util.List">
-    elect
+    select
     <include refid="Base_Column_List" />
     from pkm_attachment
     <where>
-      type = 1
+      download_type = 0
       <if test="ids != null">
         and id in
-          <foreach collection="ids" item="id" separator="," open="(" close=")">
-            #{id}
-          </foreach>
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+          #{id}
+        </foreach>
       </if>
     </where>
   </select>

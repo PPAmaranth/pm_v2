@@ -1,10 +1,13 @@
 package pp.pokemon.pm.common.util.file;
 
 import com.aliyun.oss.OSSClient;
+import com.github.pagehelper.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pp.pokemon.pm.common.constant.RetException;
+import pp.pokemon.pm.common.message.FileMessage;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -34,10 +37,8 @@ public class PutObject {
 
         OSSClient ossClient = aliyunOssClientFactory.getOssClient();
 
-        String url = "";
         try {
             ossClient.putObject(bucketName, key, new ByteArrayInputStream(content.getBytes()));
-            url = OssUtil.getUrl(ossClient, bucketName, key);
         } catch (Exception e1) {
             logger.error(e1.getMessage());
         } finally {
@@ -48,6 +49,10 @@ public class PutObject {
             }
         }
 
+        String url = OssUtil.getUrl(ossClient, bucketName, key);
+        if (StringUtil.isEmpty(url)) {
+            throw new RetException(FileMessage.OSS_UPLOAD_FAILURE_CODE, FileMessage.OSS_UPLOAD_FAILURE_MSG);
+        }
         return url;
     }
 
@@ -68,12 +73,11 @@ public class PutObject {
 
         OSSClient ossClient = aliyunOssClientFactory.getOssClient();
 
-        String url = "";
         try {
             ossClient.putObject(bucketName, key, inputStream);
-            url = OssUtil.getUrl(ossClient, bucketName, key);
         } catch (Exception e1) {
             logger.error(e1.getMessage());
+            throw new RetException(FileMessage.OSS_UPLOAD_FAILURE_CODE, FileMessage.OSS_UPLOAD_FAILURE_MSG);
         } finally {
             try {
                 ossClient.shutdown();
@@ -82,6 +86,10 @@ public class PutObject {
             }
         }
 
+        String url = OssUtil.getUrl(ossClient, bucketName, key);
+        if (StringUtil.isEmpty(url)) {
+            throw new RetException(FileMessage.OSS_UPLOAD_FAILURE_CODE, FileMessage.OSS_UPLOAD_FAILURE_MSG);
+        }
         return url;
     }
 }

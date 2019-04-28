@@ -2,9 +2,11 @@ package pp.pokemon.pm.service.util.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -55,27 +57,10 @@ public class FileServiceImpl implements FileService {
         MultipartFile file = Optional.ofNullable(
                     ((MultipartHttpServletRequest) request).getFile("file") )
                 .orElseThrow(()->new RetException(FileMessage.OSS_UPLOAD_FAILURE_CODE, FileMessage.OSS_UPLOAD_FAILURE_MSG));
+
         // 后缀名过滤
-        OssUtil.suffixFilter(file.getOriginalFilename());
+        PkmAttachment attachment = uploadAndInsertFile(request, file);
 
-        // 上传文件至oss
-        String url;
-        try {
-            // TODO: 目前无子目录+使用原始文件名, 待优化
-            url = putObject.uploadByInputStream(publicBucketName,file.getOriginalFilename(),file.getInputStream());
-        } catch (IOException e) {
-            throw new RetException(FileMessage.INVALID_INPUT_STREAM_CODE, FileMessage.INVALID_INPUT_STREAM_MSG);
-        }
-
-        // 上传oss成功后将附件信息保存在attachment表中
-        PkmAttachment attachment = new PkmAttachment();
-        attachment.setFilePath(url);
-        attachment.setFileName(file.getName());
-        attachment.setOriName(file.getOriginalFilename());
-        attachment.setSuffix(OssUtil.getSuffix(file.getOriginalFilename()));
-        attachment.setType(DownloadType.PUBLIC.getType());
-        attachment.setCreateDate(new Date());
-        attachmentMapper.insert(attachment);
         return attachment;
     }
 
@@ -83,6 +68,7 @@ public class FileServiceImpl implements FileService {
      *  oss文件流, 附件批量上传, 公有库
      */
     @Override
+    @Transactional
     public List<PkmAttachment> publicBatchUpload(HttpServletRequest request) {
         // 将文件流转为文件列表
         List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
@@ -92,29 +78,46 @@ public class FileServiceImpl implements FileService {
 
         List<PkmAttachment> attachments = new ArrayList<>();
         for (MultipartFile file : files) {
-            // 后缀名校验
-            OssUtil.suffixFilter(file.getOriginalFilename());
-            // 上传至oss
-            String url;
-            try {
-                url = putObject.uploadByInputStream(publicBucketName, file.getOriginalFilename(), file.getInputStream());
-            } catch (IOException e) {
-                throw new RetException(FileMessage.INVALID_INPUT_STREAM_CODE, FileMessage.INVALID_INPUT_STREAM_MSG);
-            }
-
-            // 上传oss成功后将附件信息保存在attachment表中
-            PkmAttachment attachment = new PkmAttachment();
-            attachment.setFilePath(url);
-            attachment.setFileName(file.getName());
-            attachment.setOriName(file.getOriginalFilename());
-            attachment.setSuffix(OssUtil.getSuffix(file.getOriginalFilename()));
-            attachment.setType(DownloadType.PUBLIC.getType());
-            attachment.setCreateDate(new Date());
-            attachmentMapper.insert(attachment);
-
+            PkmAttachment attachment = uploadAndInsertFile(request, file);
             attachments.add(attachment);
         }
         return attachments;
+    }
+
+    private PkmAttachment uploadAndInsertFile(HttpServletRequest request, MultipartFile file) {
+        // 后缀名过滤
+        OssUtil.suffixFilter(file.getOriginalFilename());
+
+        // 获取filePath filePath以"/"结尾, filePath传入"test/", 原始文件001.jpg最终路径为"test/001.jpg"
+        String module = request.getParameter("module");
+        String type = request.getParameter("type");
+        String key = OssUtil.getKey(module, type, file.getOriginalFilename());
+
+        // 上传文件至oss
+        String url;
+        try {
+            url = putObject.uploadByInputStream(publicBucketName, key, file.getInputStream());
+        } catch (IOException e) {
+            throw new RetException(FileMessage.INVALID_INPUT_STREAM_CODE, FileMessage.INVALID_INPUT_STREAM_MSG);
+        }
+
+        // 上传oss成功后将附件信息保存在attachment表中
+        PkmAttachment attachment = new PkmAttachment();
+        attachment.setFileUri(url);
+        attachment.setFilePath(key.replaceAll(file.getOriginalFilename(), ""));
+        attachment.setFileName(key);
+        attachment.setOriName(file.getOriginalFilename());
+        attachment.setSuffix(OssUtil.getSuffix(file.getOriginalFilename()));
+        attachment.setDownloadType(DownloadType.PUBLIC.getType());
+        if (StringUtil.isNotEmpty(module)) {
+            attachment.setModule(Integer.valueOf(module));
+        }
+        if (StringUtil.isNotEmpty(type)) {
+            attachment.setType(Integer.valueOf(type));
+        }
+        attachment.setCreateDate(new Date());
+        attachmentMapper.insert(attachment);
+        return attachment;
     }
 
     /**

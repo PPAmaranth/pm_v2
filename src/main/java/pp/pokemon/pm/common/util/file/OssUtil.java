@@ -4,12 +4,14 @@ import com.aliyun.oss.OSSClient;
 import com.github.pagehelper.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import pp.pokemon.pm.common.constant.RetException;
+import pp.pokemon.pm.common.enums.file.FileModule;
+import pp.pokemon.pm.common.enums.file.FileType;
 import pp.pokemon.pm.common.message.FileMessage;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class OssUtil {
 
@@ -39,6 +41,10 @@ public class OssUtil {
         return sb.toString();
     }
 
+    /**
+     * 获取文件名的后缀, 如001.jpg -> jpg
+     *
+     */
     public static String getSuffix(String fileName) {
         String suffix = "";
         if (StringUtil.isNotEmpty(fileName)) {
@@ -48,13 +54,39 @@ public class OssUtil {
     }
 
 
+    /**
+     * 校验文件名的后缀是否符合格式
+     *
+     */
     public static void suffixFilter(String fileName) {
         String fileSuffix = getSuffix(fileName);
         long count = Arrays.stream(uploadFileFormat.split(","))
                 .filter(suffix -> suffix.equals(fileSuffix))
                 .count();
         if (0 == count) {
-            throw new RetException(FileMessage.INVALID_ATTACHMENT_SUFFIX_CODE, FileMessage.INVALID_ATTACHMENT_SUFFIX_MSG);
+            throw new RetException(FileMessage.INVALID_FILE_SUFFIX_CODE, FileMessage.INVALID_FILE_SUFFIX_MSG);
         }
+    }
+
+    /**
+     * 拼接模块名, 类型名, 和原始文件名
+     * 如果传入错误的模块名和类型名则抛出错误
+     */
+    public static String getKey(String module, String type, String oriFilename) {
+        StringBuilder sb = new StringBuilder();
+        if (StringUtil.isNotEmpty(module)) {
+            Map<Integer, String> map = FileModule.getMap();
+            String str = Optional.ofNullable(map.get(module))
+                    .orElseThrow(() -> new RetException(FileMessage.INVALID_FILE_MODULE_CODE, FileMessage.INVALID_FILE_MODULE_MSG));
+            sb.append(str);
+        }
+        if (StringUtil.isNotEmpty(type)) {
+            Map<Integer, String> map = FileType.getMap();
+            String str = Optional.ofNullable(map.get(type))
+                    .orElseThrow(() -> new RetException(FileMessage.INVALID_FILE_TYPE_CODE, FileMessage.INVALID_FILE_TYPE_MSG));
+            sb.append(str);
+        }
+        sb.append(oriFilename);
+        return sb.toString();
     }
 }

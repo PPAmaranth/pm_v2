@@ -7,6 +7,8 @@ import java.util.Date;
 public class PkmAttachment {
     private Integer id;
 
+    private String fileUri;
+
     private String filePath;
 
     private String fileName;
@@ -14,6 +16,10 @@ public class PkmAttachment {
     private String oriName;
 
     private String suffix;
+
+    private Integer downloadType;
+
+    private Integer module;
 
     private Integer type;
 
@@ -26,6 +32,14 @@ public class PkmAttachment {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getFileUri() {
+        return fileUri;
+    }
+
+    public void setFileUri(String fileUri) {
+        this.fileUri = fileUri;
     }
 
     public String getFilePath() {
@@ -58,6 +72,22 @@ public class PkmAttachment {
 
     public void setSuffix(String suffix) {
         this.suffix = suffix;
+    }
+
+    public Integer getDownloadType() {
+        return downloadType;
+    }
+
+    public void setDownloadType(Integer downloadType) {
+        this.downloadType = downloadType;
+    }
+
+    public Integer getModule() {
+        return module;
+    }
+
+    public void setModule(Integer module) {
+        this.module = module;
     }
 
     public Integer getType() {

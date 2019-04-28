@@ -11,6 +11,12 @@ public class FileMessage {
     public static final String INVALID_ATTACHMENT_CODE = "10003";
     public static final String INVALID_ATTACHMENT_MSG = "附件不存在或不可用";
 
-    public static final String INVALID_ATTACHMENT_SUFFIX_CODE = "10004";
-    public static final String INVALID_ATTACHMENT_SUFFIX_MSG = "不支持的附件后缀名";
+    public static final String INVALID_FILE_SUFFIX_CODE = "10004";
+    public static final String INVALID_FILE_SUFFIX_MSG = "不支持的附件后缀名";
+
+    public static final String INVALID_FILE_MODULE_CODE = "10005";
+    public static final String INVALID_FILE_MODULE_MSG = "文件模块不可用";
+
+    public static final String INVALID_FILE_TYPE_CODE = "10006";
+    public static final String INVALID_FILE_TYPE_MSG = "文件类型不可用";
 }
