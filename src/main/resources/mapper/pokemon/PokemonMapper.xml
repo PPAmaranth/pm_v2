@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="pp.pokemon.pm.dao.mapper.pokemon.PkmPokemonMapper">
-  <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.PkmPokemon">
+<mapper namespace="pp.pokemon.pm.dao.mapper.pokemon.PokemonMapper">
+  <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.Pokemon">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="illustration_book_id" jdbcType="INTEGER" property="illustrationBookId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -24,15 +24,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from pkm_pokemon
+    from pokemon
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from pkm_pokemon
+    delete from pokemon
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmPokemon">
-    insert into pkm_pokemon (id, illustration_book_id, name, 
+  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.Pokemon">
+    insert into pokemon (id, illustration_book_id, name, 
       jp_name, en_name, hp, 
       attack, defense, s_attack, 
       s_defense, property_one, property_two, 
@@ -43,8 +43,8 @@
       #{sDefense,jdbcType=INTEGER}, #{propertyOne,jdbcType=INTEGER}, #{propertyTwo,jdbcType=INTEGER}, 
       #{speed,jdbcType=INTEGER}, #{ethnicValue,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmPokemon">
-    insert into pkm_pokemon
+  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.Pokemon">
+    insert into pokemon
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -134,8 +134,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmPokemon">
-    update pkm_pokemon
+  <update id="updateByPrimaryKeySelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.Pokemon">
+    update pokemon
     <set>
       <if test="illustrationBookId != null">
         illustration_book_id = #{illustrationBookId,jdbcType=INTEGER},
@@ -179,8 +179,8 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmPokemon">
-    update pkm_pokemon
+  <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.Pokemon">
+    update pokemon
     set illustration_book_id = #{illustrationBookId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       jp_name = #{jpName,jdbcType=VARCHAR},
@@ -196,9 +196,9 @@
       ethnic_value = #{ethnicValue,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="queryAll" parameterType="pp.pokemon.pm.web.vo.pokemon.QueryAllReqWithPageVo" resultMap="BaseResultMap">
+  <select id="queryByParam" parameterType="pp.pokemon.pm.dao.vo.pokemon.QueryAllPokemonReqVo" resultMap="BaseResultMap">
     select
-      <include refid="Base_Column_List" />
-    from pkm_pokemon
+    <include refid="Base_Column_List" />
+    from pokemon
   </select>
 </mapper>

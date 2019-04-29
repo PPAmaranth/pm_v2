@@ -5,8 +5,9 @@ import com.github.pagehelper.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pp.pokemon.pm.common.constant.RetException;
+import pp.pokemon.pm.common.enums.file.HandbookKind;
 import pp.pokemon.pm.common.enums.file.FileModule;
-import pp.pokemon.pm.common.enums.file.FileType;
+import pp.pokemon.pm.common.enums.file.HandbookType;
 import pp.pokemon.pm.common.message.FileMessage;
 
 import java.util.Arrays;
@@ -69,24 +70,30 @@ public class OssUtil {
     }
 
     /**
-     * 拼接模块名, 类型名, 和原始文件名
-     * 如果传入错误的模块名和类型名则抛出错误
+     * 对(module=1)精灵模块拼接类型名, 种类名和原始文件名
+     * 如果传入错误的类型名, 种类名则抛出错误
      */
-    public static String getKey(String module, String type, String oriFilename) {
+    public static String getHandBookKey(String type, String kind, String oriFilename) {
         StringBuilder sb = new StringBuilder();
-        if (StringUtil.isNotEmpty(module)) {
-            Map<Integer, String> map = FileModule.getMap();
-            String str = Optional.ofNullable(map.get(Integer.valueOf(module)))
-                    .orElseThrow(() -> new RetException(FileMessage.INVALID_FILE_MODULE_CODE, FileMessage.INVALID_FILE_MODULE_MSG));
-            sb.append(str);
-        }
+        String module = FileModule.ILLUSTRATED_HANDBOOK.getPath();
+        sb.append(module);
+
         if (StringUtil.isNotEmpty(type)) {
-            Map<Integer, String> map = FileType.getMap();
-            String str = Optional.ofNullable(map.get(Integer.valueOf(type)))
-                    .orElseThrow(() -> new RetException(FileMessage.INVALID_FILE_TYPE_CODE, FileMessage.INVALID_FILE_TYPE_MSG));
-            sb.append(str);
+            Map<Integer, String> typeMap = HandbookType.getMap();
+            String typeStr = Optional.ofNullable(typeMap.get(Integer.valueOf(type)))
+                    .orElseThrow(() -> new RetException(FileMessage.INVALID_HANDBOOK_TYPE_CODE, FileMessage.INVALID_HANDBOOK_TYPE_MSG));
+            sb.append(typeStr);
+
+            if (StringUtil.isNotEmpty(kind)) {
+                Map<Integer, String> kindMap = HandbookKind.getMap();
+                String kindStr = Optional.ofNullable(kindMap.get(Integer.valueOf(kind)))
+                        .orElseThrow(() -> new RetException(FileMessage.INVALID_HANDBOOK_KIND_CODE, FileMessage.INVALID_HANDBOOK_KIND_MSG));
+                sb.append(kindStr);
+            }
         }
         sb.append(oriFilename);
         return sb.toString();
     }
+
+
 }

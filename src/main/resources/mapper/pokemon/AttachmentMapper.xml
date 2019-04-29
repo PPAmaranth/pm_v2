@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="pp.pokemon.pm.dao.mapper.pokemon.PkmAttachmentMapper">
-  <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment">
+<mapper namespace="pp.pokemon.pm.dao.mapper.pokemon.AttachmentMapper">
+  <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.Attachment">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="file_uri" jdbcType="VARCHAR" property="fileUri" />
     <result column="file_path" jdbcType="VARCHAR" property="filePath" />
@@ -9,36 +9,31 @@
     <result column="ori_name" jdbcType="VARCHAR" property="oriName" />
     <result column="suffix" jdbcType="VARCHAR" property="suffix" />
     <result column="download_type" jdbcType="INTEGER" property="downloadType" />
-    <result column="module" jdbcType="INTEGER" property="module" />
-    <result column="type" jdbcType="INTEGER" property="type" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, file_uri, file_path, file_name, ori_name, suffix, download_type, module, type,
-    create_date
+    id, file_uri, file_path, file_name, ori_name, suffix, download_type, create_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from pkm_attachment
+    from attachment
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from pkm_attachment
+    delete from attachment
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment" useGeneratedKeys="true" keyProperty="id">
-    insert into pkm_attachment (id, file_uri, file_path, 
+  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.Attachment" useGeneratedKeys="true" keyProperty="id">
+    insert into attachment (id, file_uri, file_path, 
       file_name, ori_name, suffix, 
-      download_type, module, type,
-      create_date)
+      download_type, create_date)
     values (#{id,jdbcType=INTEGER}, #{fileUri,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, 
       #{fileName,jdbcType=VARCHAR}, #{oriName,jdbcType=VARCHAR}, #{suffix,jdbcType=VARCHAR}, 
-      #{downloadType,jdbcType=INTEGER}, #{module,jdbcType=INTEGER}, #{type,jdbcType=INTEGER},
-      #{createDate,jdbcType=TIMESTAMP})
+      #{downloadType,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment" useGeneratedKeys="true" keyProperty="id">
-    insert into pkm_attachment
+  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.Attachment" useGeneratedKeys="true" keyProperty="id">
+    insert into attachment
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -60,12 +55,6 @@
       </if>
       <if test="downloadType != null">
         download_type,
-      </if>
-      <if test="module != null">
-        module,
-      </if>
-      <if test="type != null">
-        type,
       </if>
       <if test="createDate != null">
         create_date,
@@ -93,19 +82,13 @@
       <if test="downloadType != null">
         #{downloadType,jdbcType=INTEGER},
       </if>
-      <if test="module != null">
-        #{module,jdbcType=INTEGER},
-      </if>
-      <if test="type != null">
-        #{type,jdbcType=INTEGER},
-      </if>
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment">
-    update pkm_attachment
+  <update id="updateByPrimaryKeySelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.Attachment">
+    update attachment
     <set>
       <if test="fileUri != null">
         file_uri = #{fileUri,jdbcType=VARCHAR},
@@ -125,49 +108,41 @@
       <if test="downloadType != null">
         download_type = #{downloadType,jdbcType=INTEGER},
       </if>
-      <if test="module != null">
-        module = #{module,jdbcType=INTEGER},
-      </if>
-      <if test="type != null">
-        type = #{module,jdbcType=INTEGER},
-      </if>
       <if test="createDate != null">
         create_date = #{createDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAttachment">
-    update pkm_attachment
+  <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.Attachment">
+    update attachment
     set file_uri = #{fileUri,jdbcType=VARCHAR},
       file_path = #{filePath,jdbcType=VARCHAR},
       file_name = #{fileName,jdbcType=VARCHAR},
       ori_name = #{oriName,jdbcType=VARCHAR},
       suffix = #{suffix,jdbcType=VARCHAR},
       download_type = #{downloadType,jdbcType=INTEGER},
-      module = #{module,jdbcType=INTEGER},
-      type = #{type,jdbcType=INTEGER},
       create_date = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="queryAllPublicAttachment" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from pkm_attachment
+    from attachment
     where download_type = 0
   </select>
   <select id="queryPublicAttachmentByIds" resultMap="BaseResultMap" parameterType="java.util.List">
-    select
-    <include refid="Base_Column_List" />
-    from pkm_attachment
-    <where>
-      download_type = 0
-      <if test="ids != null">
-        and id in
-        <foreach collection="ids" item="id" separator="," open="(" close=")">
-          #{id}
-        </foreach>
-      </if>
-    </where>
+  select
+  <include refid="Base_Column_List" />
+  from attachment
+  <where>
+    download_type = 0
+    <if test="ids != null">
+      and id in
+      <foreach collection="ids" item="id" separator="," open="(" close=")">
+        #{id}
+      </foreach>
+    </if>
+  </where>
   </select>
 </mapper>

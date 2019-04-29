@@ -1,4 +1,4 @@
-package pp.pokemon.pm.web.vo.pokemon;
+package pp.pokemon.pm.dao.vo.file;
 
 import lombok.Data;
 

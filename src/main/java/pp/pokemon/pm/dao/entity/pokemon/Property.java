@@ -1,6 +1,6 @@
 package pp.pokemon.pm.dao.entity.pokemon;
 
-public class PkmProperty {
+public class Property {
     private Integer id;
 
     private String name;

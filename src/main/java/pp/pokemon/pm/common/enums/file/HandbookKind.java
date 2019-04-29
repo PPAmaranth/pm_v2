@@ -4,27 +4,27 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum FileType {
+public enum HandbookKind {
 
-    DETAIL(1, "detail/"),
-    LIST(2, "list/"),
+    COMMON(1, "common/"),
+    RARE(2, "rare/"),
     ;
 
-    FileType(Integer type, String path){
-        this.type = type;
+    HandbookKind(Integer kind, String path){
+        this.kind = kind;
         this.path = path;
     }
 
-    private Integer type;
+    private Integer kind;
 
     private String path;
 
-    public Integer getType() {
-        return type;
+    public Integer getKind() {
+        return kind;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setKind(Integer kind) {
+        this.kind = kind;
     }
 
     public String getPath() {
@@ -37,8 +37,8 @@ public enum FileType {
 
     public static Map<Integer, String> getMap(){
         Map<Integer, String> map = new HashMap<>();
-        Arrays.stream(FileType.values())
-                .forEach(fileType -> map.put(fileType.getType(), fileType.getPath()));
+        Arrays.stream(HandbookKind.values())
+                .forEach(fileType -> map.put(fileType.getKind(), fileType.getPath()));
         return map;
     }
 

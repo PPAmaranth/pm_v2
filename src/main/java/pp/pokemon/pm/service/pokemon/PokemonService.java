@@ -1,14 +1,18 @@
 package pp.pokemon.pm.service.pokemon;
 
 import com.github.pagehelper.PageInfo;
-import pp.pokemon.pm.dao.entity.pokemon.PkmPokemon;
-import pp.pokemon.pm.web.vo.pokemon.BatchInsertPokemonVo;
-import pp.pokemon.pm.web.vo.pokemon.QueryAllReqWithPageVo;
+import pp.pokemon.pm.dao.vo.file.BatchInsertPokemonVo;
+import pp.pokemon.pm.dao.vo.pokemon.QueryAllPokemonReqVo;
+import pp.pokemon.pm.dao.vo.pokemon.PokemonAttachmentReqVo;
+import pp.pokemon.pm.web.vo.pokemon.PokemonAttachmentRespVo;
+import pp.pokemon.pm.web.vo.pokemon.QueryPokemonRespVo;
 
 import java.util.List;
 
 public interface PokemonService {
-    PageInfo<PkmPokemon> queryAll(QueryAllReqWithPageVo reqVo);
+    PageInfo<QueryPokemonRespVo> queryAll(QueryAllPokemonReqVo reqVo);
 
     void batchInsertPokemon(List<BatchInsertPokemonVo> pokemons);
+
+    List<PokemonAttachmentRespVo> getPokemonAttachment(PokemonAttachmentReqVo reqVo);
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="pp.pokemon.pm.dao.mapper.pokemon.PkmSkillMapper">
-  <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.PkmSkill">
+<mapper namespace="pp.pokemon.pm.dao.mapper.pokemon.SkillMapper">
+  <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.Skill">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="cn_name" jdbcType="VARCHAR" property="cnName" />
     <result column="jp_name" jdbcType="VARCHAR" property="jpName" />
@@ -19,15 +19,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from pkm_skill
+    from skill
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from pkm_skill
+    delete from skill
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmSkill">
-    insert into pkm_skill (id, cn_name, jp_name, 
+  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.Skill">
+    insert into skill (id, cn_name, jp_name, 
       en_name, property, classification, 
       power, hit_probability, PP
       )
@@ -36,8 +36,8 @@
       #{power,jdbcType=INTEGER}, #{hitProbability,jdbcType=INTEGER}, #{pp,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmSkill">
-    insert into pkm_skill
+  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.Skill">
+    insert into skill
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -97,8 +97,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmSkill">
-    update pkm_skill
+  <update id="updateByPrimaryKeySelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.Skill">
+    update skill
     <set>
       <if test="cnName != null">
         cn_name = #{cnName,jdbcType=VARCHAR},
@@ -127,8 +127,8 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmSkill">
-    update pkm_skill
+  <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.Skill">
+    update skill
     set cn_name = #{cnName,jdbcType=VARCHAR},
       jp_name = #{jpName,jdbcType=VARCHAR},
       en_name = #{enName,jdbcType=VARCHAR},

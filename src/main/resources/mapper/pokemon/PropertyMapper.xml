@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="pp.pokemon.pm.dao.mapper.pokemon.PkmPropertyMapper">
-  <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.PkmProperty">
+<mapper namespace="pp.pokemon.pm.dao.mapper.pokemon.PropertyMapper">
+  <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.Property">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="en_name" jdbcType="VARCHAR" property="enName" />
@@ -12,21 +12,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from pkm_property
+    from property
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from pkm_property
+    delete from property
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmProperty">
-    insert into pkm_property (id, name, en_name
+  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.Property">
+    insert into property (id, name, en_name
       )
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{enName,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmProperty">
-    insert into pkm_property
+  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.Property">
+    insert into property
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -50,8 +50,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmProperty">
-    update pkm_property
+  <update id="updateByPrimaryKeySelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.Property">
+    update property
     <set>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
@@ -62,8 +62,8 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmProperty">
-    update pkm_property
+  <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.Property">
+    update property
     set name = #{name,jdbcType=VARCHAR},
       en_name = #{enName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}

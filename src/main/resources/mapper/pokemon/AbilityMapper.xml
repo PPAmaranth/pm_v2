@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="pp.pokemon.pm.dao.mapper.pokemon.PkmAbilityMapper">
-  <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.PkmAbility">
+<mapper namespace="pp.pokemon.pm.dao.mapper.pokemon.AbilityMapper">
+  <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.Ability">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="jp_name" jdbcType="VARCHAR" property="jpName" />
@@ -14,21 +14,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from pkm_ability
+    from ability
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from pkm_ability
+    delete from ability
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAbility">
-    insert into pkm_ability (id, name, jp_name, 
+  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.Ability">
+    insert into ability (id, name, jp_name, 
       en_name, description)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{jpName,jdbcType=VARCHAR}, 
       #{enName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAbility">
-    insert into pkm_ability
+  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.Ability">
+    insert into ability
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -64,8 +64,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAbility">
-    update pkm_ability
+  <update id="updateByPrimaryKeySelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.Ability">
+    update ability
     <set>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
@@ -82,8 +82,8 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.PkmAbility">
-    update pkm_ability
+  <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.Ability">
+    update ability
     set name = #{name,jdbcType=VARCHAR},
       jp_name = #{jpName,jdbcType=VARCHAR},
       en_name = #{enName,jdbcType=VARCHAR},

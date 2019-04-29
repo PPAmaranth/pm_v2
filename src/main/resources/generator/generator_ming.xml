@@ -33,9 +33,11 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
-        <table tableName="pkm_attachment" domainObjectName="PkmAttachment"
+
+        <table tableName="ability" domainObjectName="Ability"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false" />
+
     </context>
 </generatorConfiguration>
