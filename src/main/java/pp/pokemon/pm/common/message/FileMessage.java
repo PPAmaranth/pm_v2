@@ -17,6 +17,9 @@ public class FileMessage {
     public static final String INVALID_FILE_MODULE_CODE = "10005";
     public static final String INVALID_FILE_MODULE_MSG = "文件模块不可用";
 
-    public static final String INVALID_FILE_TYPE_CODE = "10006";
-    public static final String INVALID_FILE_TYPE_MSG = "文件类型不可用";
+    public static final String INVALID_HANDBOOK_TYPE_CODE = "10006";
+    public static final String INVALID_HANDBOOK_TYPE_MSG = "文件类型不可用";
+
+    public static final String INVALID_HANDBOOK_KIND_CODE = "10007";
+    public static final String INVALID_HANDBOOK_KIND_MSG = "文件种类不可用";
 }

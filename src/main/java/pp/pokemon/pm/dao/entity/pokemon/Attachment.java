@@ -1,10 +1,8 @@
 package pp.pokemon.pm.dao.entity.pokemon;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
 
-public class PkmAttachment {
+public class Attachment {
     private Integer id;
 
     private String fileUri;
@@ -19,11 +17,6 @@ public class PkmAttachment {
 
     private Integer downloadType;
 
-    private Integer module;
-
-    private Integer type;
-
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createDate;
 
     public Integer getId() {
@@ -80,22 +73,6 @@ public class PkmAttachment {
 
     public void setDownloadType(Integer downloadType) {
         this.downloadType = downloadType;
-    }
-
-    public Integer getModule() {
-        return module;
-    }
-
-    public void setModule(Integer module) {
-        this.module = module;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
     }
 
     public Date getCreateDate() {

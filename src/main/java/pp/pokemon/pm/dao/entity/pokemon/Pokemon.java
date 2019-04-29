@@ -1,6 +1,6 @@
 package pp.pokemon.pm.dao.entity.pokemon;
 
-public class PkmPokemon {
+public class Pokemon {
     private Integer id;
 
     private Integer illustrationBookId;

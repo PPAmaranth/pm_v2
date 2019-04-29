@@ -1,6 +1,6 @@
 package pp.pokemon.pm.dao.entity.pokemon;
 
-public class PkmSkill {
+public class Skill {
     private Integer id;
 
     private String cnName;

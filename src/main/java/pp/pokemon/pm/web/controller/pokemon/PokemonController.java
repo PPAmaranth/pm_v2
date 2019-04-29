@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import pp.pokemon.pm.service.pokemon.PokemonService;
 import pp.pokemon.pm.web.controller.BaseController;
 import pp.pokemon.pm.web.vo.base.DefaultApiResult;
-import pp.pokemon.pm.web.vo.pokemon.BatchInsertPokemonVo;
-import pp.pokemon.pm.web.vo.pokemon.QueryAllReqWithPageVo;
+import pp.pokemon.pm.dao.vo.file.BatchInsertPokemonVo;
+import pp.pokemon.pm.dao.vo.pokemon.QueryAllPokemonReqVo;
+import pp.pokemon.pm.dao.vo.pokemon.PokemonAttachmentReqVo;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class PokemonController extends BaseController {
     private PokemonService pokemonService;
 
     @RequestMapping(value = "/queryAll", method = {RequestMethod.POST})
-    public DefaultApiResult queryAll(@RequestBody QueryAllReqWithPageVo reqVo){
+    public DefaultApiResult queryAll(@RequestBody QueryAllPokemonReqVo reqVo){
         return success(pokemonService.queryAll(reqVo));
     }
 
@@ -29,5 +30,10 @@ public class PokemonController extends BaseController {
     public DefaultApiResult batchInsertPokemon(@RequestBody List<BatchInsertPokemonVo> pokemons){
         pokemonService.batchInsertPokemon(pokemons);
         return success();
+    }
+
+    @RequestMapping(value = "/getPokemonImage", method = {RequestMethod.POST})
+    public DefaultApiResult getPokemonImage(@RequestBody PokemonAttachmentReqVo reqVo) {
+        return success(pokemonService.getPokemonAttachment(reqVo));
     }
 }
