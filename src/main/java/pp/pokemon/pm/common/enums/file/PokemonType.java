@@ -4,27 +4,27 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum HandbookKind {
+public enum PokemonType {
 
-    COMMON(1, "common/"),
-    RARE(2, "rare/"),
+    DETAIL(1, "detail/"),
+    LIST(2, "list/"),
     ;
 
-    HandbookKind(Integer kind, String path){
-        this.kind = kind;
+    PokemonType(Integer type, String path){
+        this.type = type;
         this.path = path;
     }
 
-    private Integer kind;
+    private Integer type;
 
     private String path;
 
-    public Integer getKind() {
-        return kind;
+    public Integer getType() {
+        return type;
     }
 
-    public void setKind(Integer kind) {
-        this.kind = kind;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getPath() {
@@ -37,8 +37,8 @@ public enum HandbookKind {
 
     public static Map<Integer, String> getMap(){
         Map<Integer, String> map = new HashMap<>();
-        Arrays.stream(HandbookKind.values())
-                .forEach(fileType -> map.put(fileType.getKind(), fileType.getPath()));
+        Arrays.stream(PokemonType.values())
+                .forEach(pokemonType -> map.put(pokemonType.getType(), pokemonType.getPath()));
         return map;
     }
 

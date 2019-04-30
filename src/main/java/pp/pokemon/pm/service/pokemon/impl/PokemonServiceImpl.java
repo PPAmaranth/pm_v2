@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import pp.pokemon.pm.common.constant.RetException;
-import pp.pokemon.pm.common.enums.file.HandbookType;
+import pp.pokemon.pm.common.enums.file.PokemonKind;
+import pp.pokemon.pm.common.enums.file.PokemonType;
 import pp.pokemon.pm.common.message.PokemonMessage;
 import pp.pokemon.pm.dao.entity.pokemon.Attachment;
 import pp.pokemon.pm.dao.entity.pokemon.Pokemon;
@@ -23,6 +24,7 @@ import pp.pokemon.pm.web.vo.pokemon.PokemonAttachmentRespVo;
 import pp.pokemon.pm.web.vo.pokemon.QueryPokemonRespVo;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -42,7 +44,7 @@ public class PokemonServiceImpl implements PokemonService {
      * 获取所有精灵
      */
     @Override
-    public PageInfo<QueryPokemonRespVo> queryAll(QueryAllPokemonReqVo reqVo) {
+    public PageInfo<QueryPokemonRespVo> pokemonList(QueryAllPokemonReqVo reqVo) {
         PageHelper.startPage(reqVo.getPageNum(), reqVo.getPageSize());
         List<Pokemon> pokemons = pokemonMapper.queryByParam(reqVo);
         PageInfo<Pokemon> pokemonPageInfo = new PageInfo<>(pokemons);
@@ -54,7 +56,7 @@ public class PokemonServiceImpl implements PokemonService {
                     // 精灵主图
                     PokemonAttachmentReqVo pokemonAttachmentReqVo = new PokemonAttachmentReqVo();
                     pokemonAttachmentReqVo.setId(pokemon.getId());
-                    pokemonAttachmentReqVo.setType(HandbookType.LIST.getType());
+                    pokemonAttachmentReqVo.setType(PokemonType.LIST.getType());
                     PokemonAttachmentRel rel = attachmentRelMapper.selectByParam(pokemonAttachmentReqVo)
                             .stream()
                             .findAny()
@@ -105,11 +107,13 @@ public class PokemonServiceImpl implements PokemonService {
                     PokemonAttachmentRespVo respVo = new PokemonAttachmentRespVo();
                     Attachment attachment = attachmentMapper.selectByPrimaryKey(rel.getAttachmentId());
 
-                    respVo.setPokemonId(pokemon.getId());
+                    respVo.setId(pokemon.getId());
                     respVo.setAttachmentId(attachment.getId());
                     respVo.setFileUri(attachment.getFileUri());
                     respVo.setType(rel.getType());
+                    respVo.setTypeName(getTypeName(rel.getType()));
                     respVo.setKind(rel.getKind());
+                    respVo.setKindName(getKindName(rel.getKind()));
                     return respVo;
                 }).collect(Collectors.toList());
         return respVos;
@@ -121,5 +125,25 @@ public class PokemonServiceImpl implements PokemonService {
     private Pokemon getPokemon(Integer id) {
         return Optional.ofNullable(pokemonMapper.selectByPrimaryKey(id))
                 .orElseThrow(() -> new RetException(PokemonMessage.INVALID_POKEMON_CODE, PokemonMessage.INVALID_POKEMON_MSG));
+    }
+
+    /**
+     * 根据type获取typeName
+     */
+    private String getTypeName(Integer type) {
+        Map<Integer, String> map = PokemonType.getMap();
+        return Optional.ofNullable(type)
+                .map(id -> map.get(id))
+                .orElse(null);
+    }
+
+    /**
+     * 根据kind获取kindName
+     */
+    private String getKindName(Integer kind) {
+        Map<Integer, String> map = PokemonKind.getMap();
+        return Optional.ofNullable(kind)
+                .map(id -> map.get(id))
+                .orElse(null);
     }
 }

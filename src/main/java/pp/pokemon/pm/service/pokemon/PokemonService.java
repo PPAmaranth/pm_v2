@@ -10,7 +10,7 @@ import pp.pokemon.pm.web.vo.pokemon.QueryPokemonRespVo;
 import java.util.List;
 
 public interface PokemonService {
-    PageInfo<QueryPokemonRespVo> queryAll(QueryAllPokemonReqVo reqVo);
+    PageInfo<QueryPokemonRespVo> pokemonList(QueryAllPokemonReqVo reqVo);
 
     void batchInsertPokemon(List<BatchInsertPokemonVo> pokemons);
 

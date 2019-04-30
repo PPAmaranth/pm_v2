@@ -21,9 +21,9 @@ public class PokemonController extends BaseController {
     @Autowired
     private PokemonService pokemonService;
 
-    @RequestMapping(value = "/queryAll", method = {RequestMethod.POST})
+    @RequestMapping(value = "/pokemonList", method = {RequestMethod.POST})
     public DefaultApiResult queryAll(@RequestBody QueryAllPokemonReqVo reqVo){
-        return success(pokemonService.queryAll(reqVo));
+        return success(pokemonService.pokemonList(reqVo));
     }
 
     @RequestMapping(value = "/batchInsertPokemon", method = {RequestMethod.POST})
@@ -32,8 +32,9 @@ public class PokemonController extends BaseController {
         return success();
     }
 
-    @RequestMapping(value = "/getPokemonImage", method = {RequestMethod.POST})
-    public DefaultApiResult getPokemonImage(@RequestBody PokemonAttachmentReqVo reqVo) {
+    @RequestMapping(value = "/getPokemonAttachment", method = {RequestMethod.POST})
+    public DefaultApiResult getPokemonAttachment(@RequestBody PokemonAttachmentReqVo reqVo) {
         return success(pokemonService.getPokemonAttachment(reqVo));
     }
+
 }

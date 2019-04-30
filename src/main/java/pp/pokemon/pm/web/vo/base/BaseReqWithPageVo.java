@@ -16,7 +16,8 @@ public class BaseReqWithPageVo {
     @Max(value = 2147483647, message = "取值1~2147483647")
     private Integer pageSize = 15;
 
+    private String orderBy;
+
     private String sort;
 
-    private String orderBy;
 }
