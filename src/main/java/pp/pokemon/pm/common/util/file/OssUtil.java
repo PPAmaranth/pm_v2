@@ -5,9 +5,9 @@ import com.github.pagehelper.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pp.pokemon.pm.common.constant.RetException;
-import pp.pokemon.pm.common.enums.file.HandbookKind;
+import pp.pokemon.pm.common.enums.file.PokemonKind;
 import pp.pokemon.pm.common.enums.file.FileModule;
-import pp.pokemon.pm.common.enums.file.HandbookType;
+import pp.pokemon.pm.common.enums.file.PokemonType;
 import pp.pokemon.pm.common.message.FileMessage;
 
 import java.util.Arrays;
@@ -79,13 +79,13 @@ public class OssUtil {
         sb.append(module);
 
         if (StringUtil.isNotEmpty(type)) {
-            Map<Integer, String> typeMap = HandbookType.getMap();
+            Map<Integer, String> typeMap = PokemonType.getMap();
             String typeStr = Optional.ofNullable(typeMap.get(Integer.valueOf(type)))
                     .orElseThrow(() -> new RetException(FileMessage.INVALID_HANDBOOK_TYPE_CODE, FileMessage.INVALID_HANDBOOK_TYPE_MSG));
             sb.append(typeStr);
 
             if (StringUtil.isNotEmpty(kind)) {
-                Map<Integer, String> kindMap = HandbookKind.getMap();
+                Map<Integer, String> kindMap = PokemonKind.getMap();
                 String kindStr = Optional.ofNullable(kindMap.get(Integer.valueOf(kind)))
                         .orElseThrow(() -> new RetException(FileMessage.INVALID_HANDBOOK_KIND_CODE, FileMessage.INVALID_HANDBOOK_KIND_MSG));
                 sb.append(kindStr);
