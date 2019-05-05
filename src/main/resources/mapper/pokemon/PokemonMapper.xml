@@ -31,7 +31,7 @@
     delete from pokemon
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.Pokemon">
+  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.Pokemon" useGeneratedKeys="true" keyProperty="id">
     insert into pokemon (id, illustration_book_id, name, 
       jp_name, en_name, hp, 
       attack, defense, s_attack, 
@@ -43,7 +43,7 @@
       #{sDefense,jdbcType=INTEGER}, #{propertyOne,jdbcType=INTEGER}, #{propertyTwo,jdbcType=INTEGER}, 
       #{speed,jdbcType=INTEGER}, #{ethnicValue,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.Pokemon">
+  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.Pokemon" useGeneratedKeys="true" keyProperty="id">
     insert into pokemon
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

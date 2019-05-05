@@ -19,6 +19,10 @@ public class Skill {
 
     private Integer pp;
 
+    private Integer isMachineSkill;
+
+    private String machineSkillCode;
+
     public Integer getId() {
         return id;
     }
@@ -89,5 +93,21 @@ public class Skill {
 
     public void setPp(Integer pp) {
         this.pp = pp;
+    }
+
+    public Integer getIsMachineSkill() {
+        return isMachineSkill;
+    }
+
+    public void setIsMachineSkill(Integer isMachineSkill) {
+        this.isMachineSkill = isMachineSkill;
+    }
+
+    public String getMachineSkillCode() {
+        return machineSkillCode;
+    }
+
+    public void setMachineSkillCode(String machineSkillCode) {
+        this.machineSkillCode = machineSkillCode;
     }
 }

@@ -63,7 +63,7 @@ public class FileServiceImpl implements FileService {
      *  oss文件流, 附件单个上传, 公有库
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Attachment publicUpload(HttpServletRequest request) {
 
         // 将文件流转为文件
@@ -81,7 +81,7 @@ public class FileServiceImpl implements FileService {
      *  oss文件流, 附件批量上传, 公有库
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public List<Attachment> publicBatchUpload(HttpServletRequest request) {
         // 将文件流转为文件列表
         List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");

@@ -34,10 +34,9 @@
         </javaClientGenerator>
 
 
-        <table tableName="ability" domainObjectName="Ability"
+        <table tableName="machine_skill_rel" domainObjectName="MachineSkillRel"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false" />
-
     </context>
 </generatorConfiguration>

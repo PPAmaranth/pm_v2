@@ -11,10 +11,12 @@
     <result column="power" jdbcType="INTEGER" property="power" />
     <result column="hit_probability" jdbcType="INTEGER" property="hitProbability" />
     <result column="PP" jdbcType="INTEGER" property="pp" />
+    <result column="is_machine_skill" jdbcType="INTEGER" property="isMachineSkill" />
+    <result column="machine_skill_code" jdbcType="VARCHAR" property="machineSkillCode" />
   </resultMap>
   <sql id="Base_Column_List">
     id, cn_name, jp_name, en_name, property, classification, power, hit_probability, 
-    PP
+    PP, is_machine_skill, machine_skill_code
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -29,12 +31,12 @@
   <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.Skill">
     insert into skill (id, cn_name, jp_name, 
       en_name, property, classification, 
-      power, hit_probability, PP
-      )
+      power, hit_probability, PP, 
+      is_machine_skill, machine_skill_code)
     values (#{id,jdbcType=INTEGER}, #{cnName,jdbcType=VARCHAR}, #{jpName,jdbcType=VARCHAR}, 
       #{enName,jdbcType=VARCHAR}, #{property,jdbcType=VARCHAR}, #{classification,jdbcType=VARCHAR}, 
-      #{power,jdbcType=INTEGER}, #{hitProbability,jdbcType=INTEGER}, #{pp,jdbcType=INTEGER}
-      )
+      #{power,jdbcType=INTEGER}, #{hitProbability,jdbcType=INTEGER}, #{pp,jdbcType=INTEGER}, 
+      #{isMachineSkill,jdbcType=INTEGER}, #{machineSkillCode,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.Skill">
     insert into skill
@@ -66,6 +68,12 @@
       <if test="pp != null">
         PP,
       </if>
+      <if test="isMachineSkill != null">
+        is_machine_skill,
+      </if>
+      <if test="machineSkillCode != null">
+        machine_skill_code,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -94,6 +102,12 @@
       </if>
       <if test="pp != null">
         #{pp,jdbcType=INTEGER},
+      </if>
+      <if test="isMachineSkill != null">
+        #{isMachineSkill,jdbcType=INTEGER},
+      </if>
+      <if test="machineSkillCode != null">
+        #{machineSkillCode,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -124,6 +138,12 @@
       <if test="pp != null">
         PP = #{pp,jdbcType=INTEGER},
       </if>
+      <if test="isMachineSkill != null">
+        is_machine_skill = #{isMachineSkill,jdbcType=INTEGER},
+      </if>
+      <if test="machineSkillCode != null">
+        machine_skill_code = #{machineSkillCode,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -136,7 +156,9 @@
       classification = #{classification,jdbcType=VARCHAR},
       power = #{power,jdbcType=INTEGER},
       hit_probability = #{hitProbability,jdbcType=INTEGER},
-      PP = #{pp,jdbcType=INTEGER}
+      PP = #{pp,jdbcType=INTEGER},
+      is_machine_skill = #{isMachineSkill,jdbcType=INTEGER},
+      machine_skill_code = #{machineSkillCode,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

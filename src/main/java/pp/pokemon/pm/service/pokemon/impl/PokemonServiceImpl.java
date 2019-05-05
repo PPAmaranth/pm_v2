@@ -5,17 +5,16 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import pp.pokemon.pm.common.constant.RetException;
 import pp.pokemon.pm.common.enums.file.PokemonKind;
 import pp.pokemon.pm.common.enums.file.PokemonType;
 import pp.pokemon.pm.common.message.PokemonMessage;
-import pp.pokemon.pm.dao.entity.pokemon.Attachment;
-import pp.pokemon.pm.dao.entity.pokemon.Pokemon;
-import pp.pokemon.pm.dao.entity.pokemon.PokemonAttachmentRel;
-import pp.pokemon.pm.dao.mapper.pokemon.AttachmentMapper;
-import pp.pokemon.pm.dao.mapper.pokemon.PokemonAttachmentRelMapper;
-import pp.pokemon.pm.dao.mapper.pokemon.PokemonMapper;
+import pp.pokemon.pm.dao.entity.pokemon.*;
+import pp.pokemon.pm.dao.mapper.pokemon.*;
+import pp.pokemon.pm.dao.vo.pokemon.InsertPokemonReqVo;
+import pp.pokemon.pm.dao.vo.pokemon.MachineSkillVo;
 import pp.pokemon.pm.service.pokemon.PokemonService;
 import pp.pokemon.pm.dao.vo.file.BatchInsertPokemonVo;
 import pp.pokemon.pm.dao.vo.pokemon.QueryAllPokemonReqVo;
@@ -33,6 +32,15 @@ public class PokemonServiceImpl implements PokemonService {
 
     @Autowired
     private PokemonMapper pokemonMapper;
+
+    @Autowired
+    private EvolvePokemonRelMapper evolvePokemonRelMapper;
+
+    @Autowired
+    private EvolveSkillRelMapper evolveSkillRelMapper;
+
+    @Autowired
+    private MachineSkillRelMapper machineSkillRelMapper;
 
     @Autowired
     private PokemonAttachmentRelMapper attachmentRelMapper;
@@ -117,6 +125,45 @@ public class PokemonServiceImpl implements PokemonService {
                     return respVo;
                 }).collect(Collectors.toList());
         return respVos;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void insertPokemon(InsertPokemonReqVo reqVo) {
+        // 插入主表
+        Pokemon pokemon = new Pokemon();
+        BeanUtils.copyProperties(reqVo, pokemon);
+        pokemonMapper.insert(pokemon);
+
+        // 插入进化关系表
+        if (null != reqVo.getEvolutionRelationship()) {
+            EvolvePokemonRel rel = new EvolvePokemonRel();
+            rel.setPokemonId(pokemon.getId());
+            rel.setBeforeId(reqVo.getEvolutionRelationship().getBeforeId());
+            rel.setCondition(reqVo.getEvolutionRelationship().getCondition());
+            evolvePokemonRelMapper.insert(rel);
+        }
+
+        // 插入进化技能表
+        if (!CollectionUtils.isEmpty(reqVo.getEvolutionSkillVos())) {
+            reqVo.getEvolutionSkillVos().stream().forEach(skillVo -> {
+                EvolveSkillRel rel = new EvolveSkillRel();
+                rel.setPokemonId(pokemon.getId());
+                rel.setSkillId(skillVo.getId());
+                rel.setLevel(skillVo.getLevel());
+                evolveSkillRelMapper.insert(rel);
+            });
+        }
+
+        // 插入技能机技能关系表
+        if (!CollectionUtils.isEmpty(reqVo.getMachineSkillVos())) {
+            reqVo.getMachineSkillVos().stream().forEach(skillVo -> {
+                MachineSkillRel rel = new MachineSkillRel();
+                rel.setPokemonId(pokemon.getId());
+                rel.setSkillId(skillVo.getId());
+                machineSkillRelMapper.insert(rel);
+            });
+        }
     }
 
     /**

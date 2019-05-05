@@ -2,6 +2,7 @@ package pp.pokemon.pm.service.pokemon;
 
 import com.github.pagehelper.PageInfo;
 import pp.pokemon.pm.dao.vo.file.BatchInsertPokemonVo;
+import pp.pokemon.pm.dao.vo.pokemon.InsertPokemonReqVo;
 import pp.pokemon.pm.dao.vo.pokemon.QueryAllPokemonReqVo;
 import pp.pokemon.pm.dao.vo.pokemon.PokemonAttachmentReqVo;
 import pp.pokemon.pm.web.vo.pokemon.PokemonAttachmentRespVo;
@@ -15,4 +16,6 @@ public interface PokemonService {
     void batchInsertPokemon(List<BatchInsertPokemonVo> pokemons);
 
     List<PokemonAttachmentRespVo> getPokemonAttachment(PokemonAttachmentReqVo reqVo);
+
+    void insertPokemon(InsertPokemonReqVo reqVo);
 }

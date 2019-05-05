@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pp.pokemon.pm.dao.mapper.pokemon.EvolveSkillRelMapper">
+  <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.EvolveSkillRel">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="skill_id" jdbcType="INTEGER" property="skillId" />
+    <result column="pokemon_id" jdbcType="INTEGER" property="pokemonId" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, skill_id, pokemon_id, level
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from evolve_skill_rel
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from evolve_skill_rel
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.EvolveSkillRel">
+    insert into evolve_skill_rel (id, skill_id, pokemon_id, 
+      level)
+    values (#{id,jdbcType=INTEGER}, #{skillId,jdbcType=INTEGER}, #{pokemonId,jdbcType=INTEGER}, 
+      #{level,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.EvolveSkillRel">
+    insert into evolve_skill_rel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="skillId != null">
+        skill_id,
+      </if>
+      <if test="pokemonId != null">
+        pokemon_id,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="skillId != null">
+        #{skillId,jdbcType=INTEGER},
+      </if>
+      <if test="pokemonId != null">
+        #{pokemonId,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.EvolveSkillRel">
+    update evolve_skill_rel
+    <set>
+      <if test="skillId != null">
+        skill_id = #{skillId,jdbcType=INTEGER},
+      </if>
+      <if test="pokemonId != null">
+        pokemon_id = #{pokemonId,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.EvolveSkillRel">
+    update evolve_skill_rel
+    set skill_id = #{skillId,jdbcType=INTEGER},
+      pokemon_id = #{pokemonId,jdbcType=INTEGER},
+      level = #{level,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
