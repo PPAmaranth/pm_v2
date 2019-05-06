@@ -125,7 +125,6 @@ public class PokemonServiceImpl implements PokemonService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void insert(InsertPokemonReqVo reqVo) {
-        // TODO: 校验图鉴编号尚未使用
 
         // 插入主表
         Pokemon pokemon = new Pokemon();
