@@ -79,4 +79,16 @@
       condition = #{condition,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByPokemonId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from evolve_pokemon_rel
+    where pokemon_id = #{pokemonId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByBeforeId" resultType="pp.pokemon.pm.dao.entity.pokemon.EvolvePokemonRel">
+    select
+    <include refid="Base_Column_List" />
+    from evolve_pokemon_rel
+    where before_id = #{beforeId,jdbcType=INTEGER}
+  </select>
 </mapper>

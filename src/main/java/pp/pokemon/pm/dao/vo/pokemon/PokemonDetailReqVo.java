@@ -5,8 +5,8 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class MachineSkillVo {
+public class PokemonDetailReqVo {
 
-    @NotNull(message = "技能id不能为空")
+    @NotNull(message = "精灵id不能为空")
     private Integer id;
 }

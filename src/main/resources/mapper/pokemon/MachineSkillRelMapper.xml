@@ -68,4 +68,14 @@
       pokemon_id = #{pokemonId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectSkillsByPokemonId" resultType="pp.pokemon.pm.dao.vo.pokemon.MachineSkillRespVo" parameterType="java.lang.Integer">
+    select
+      machine_skill_rel.skill_id id,
+      skill.cn_name name,
+      skill.machine_skill_code machineSkillCode
+    from machine_skill_rel
+    left join skill on machine_skill_rel.skill_id = skill.id
+    where machine_skill_rel.pokemon_id = #{pokemonId,jdbcType=INTEGER}
+  </select>
+
 </mapper>

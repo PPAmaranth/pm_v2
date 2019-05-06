@@ -1,6 +1,10 @@
 package pp.pokemon.pm.dao.mapper.pokemon;
 
+import org.apache.ibatis.annotations.Param;
 import pp.pokemon.pm.dao.entity.pokemon.EvolveSkillRel;
+import pp.pokemon.pm.dao.vo.pokemon.EvolutionSkillRespVo;
+
+import java.util.List;
 
 public interface EvolveSkillRelMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +18,6 @@ public interface EvolveSkillRelMapper {
     int updateByPrimaryKeySelective(EvolveSkillRel record);
 
     int updateByPrimaryKey(EvolveSkillRel record);
+
+    List<EvolutionSkillRespVo> selectSkillsByPokemonId(@Param("pokemonId") Integer pokemonId);
 }

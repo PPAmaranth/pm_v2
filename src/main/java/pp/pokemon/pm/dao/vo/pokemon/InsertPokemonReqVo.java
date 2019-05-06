@@ -10,6 +10,8 @@ import java.util.List;
 @Data
 public class InsertPokemonReqVo {
 
+    private Integer illustrationBookId;
+
     @NotBlank(message = "技能名称不能为空")
     private String name;
 
@@ -43,10 +45,10 @@ public class InsertPokemonReqVo {
     @NotNull(message = "种族值不能为空")
     private Integer ethnicValue;
 
-    private EvolutionRelationshipVo evolutionRelationship;
+    private EvolutionRelationshipReqVo evolutionRelationship;
 
-    private List<EvolutionSkillVo> evolutionSkillVos;
+    private List<EvolutionSkillReqVo> evolutionSkillReqVos;
 
     @Size(max = 50, message = "技能机技能数量最多50")
-    private List<MachineSkillVo> machineSkillVos;
+    private List<MachineSkillReqVo> machineSkillReqVos;
 }

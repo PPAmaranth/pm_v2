@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class EvolutionRelationshipVo {
+public class EvolutionRelationshipReqVo {
 
     @NotNull(message = "进化前的精灵id不能为空")
     private Integer beforeId;

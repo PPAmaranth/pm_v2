@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import pp.pokemon.pm.common.util.BeanValidators;
 import pp.pokemon.pm.dao.vo.pokemon.InsertPokemonReqVo;
+import pp.pokemon.pm.dao.vo.pokemon.PokemonDetailReqVo;
 import pp.pokemon.pm.service.pokemon.PokemonService;
 import pp.pokemon.pm.web.controller.BaseController;
 import pp.pokemon.pm.web.vo.base.DefaultApiResult;
@@ -39,10 +40,16 @@ public class PokemonController extends BaseController {
         return success(pokemonService.getPokemonAttachment(reqVo));
     }
 
-    @RequestMapping(value = "/insertPokemon", method = {RequestMethod.POST})
-    public DefaultApiResult insertPokemon(@RequestBody InsertPokemonReqVo reqVo) {
+    @RequestMapping(value = "/insert", method = {RequestMethod.POST})
+    public DefaultApiResult insert(@RequestBody InsertPokemonReqVo reqVo) {
         BeanValidators.validateWithParameterException(validator, reqVo);
-        pokemonService.insertPokemon(reqVo);
+        pokemonService.insert(reqVo);
         return success();
+    }
+
+    @RequestMapping(value = "/detail", method = {RequestMethod.POST})
+    public DefaultApiResult detail(@RequestBody PokemonDetailReqVo reqVo) {
+        BeanValidators.validateWithParameterException(validator, reqVo);
+        return success(pokemonService.detail(reqVo));
     }
 }

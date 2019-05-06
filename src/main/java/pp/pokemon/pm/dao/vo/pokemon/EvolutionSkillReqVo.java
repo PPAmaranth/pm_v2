@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class EvolutionSkillVo {
+public class EvolutionSkillReqVo {
 
     @NotNull(message = "技能id不能为空")
     private Integer id;

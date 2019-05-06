@@ -1,6 +1,10 @@
 package pp.pokemon.pm.dao.mapper.pokemon;
 
+import org.apache.ibatis.annotations.Param;
 import pp.pokemon.pm.dao.entity.pokemon.MachineSkillRel;
+import pp.pokemon.pm.dao.vo.pokemon.MachineSkillRespVo;
+
+import java.util.List;
 
 public interface MachineSkillRelMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +18,6 @@ public interface MachineSkillRelMapper {
     int updateByPrimaryKeySelective(MachineSkillRel record);
 
     int updateByPrimaryKey(MachineSkillRel record);
+
+    List<MachineSkillRespVo> selectSkillsByPokemonId(@Param("pokemonId") Integer pokemonId);
 }

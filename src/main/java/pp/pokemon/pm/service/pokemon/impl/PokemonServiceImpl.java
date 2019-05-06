@@ -13,18 +13,15 @@ import pp.pokemon.pm.common.enums.file.PokemonType;
 import pp.pokemon.pm.common.message.PokemonMessage;
 import pp.pokemon.pm.dao.entity.pokemon.*;
 import pp.pokemon.pm.dao.mapper.pokemon.*;
-import pp.pokemon.pm.dao.vo.pokemon.InsertPokemonReqVo;
-import pp.pokemon.pm.dao.vo.pokemon.MachineSkillVo;
+import pp.pokemon.pm.dao.vo.pokemon.*;
 import pp.pokemon.pm.service.pokemon.PokemonService;
 import pp.pokemon.pm.dao.vo.file.BatchInsertPokemonVo;
-import pp.pokemon.pm.dao.vo.pokemon.QueryAllPokemonReqVo;
-import pp.pokemon.pm.dao.vo.pokemon.PokemonAttachmentReqVo;
+import pp.pokemon.pm.web.vo.pokemon.EvolutionRelationshipRespVo;
 import pp.pokemon.pm.web.vo.pokemon.PokemonAttachmentRespVo;
+import pp.pokemon.pm.web.vo.pokemon.PokemonDetailRespVo;
 import pp.pokemon.pm.web.vo.pokemon.QueryPokemonRespVo;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,6 +38,15 @@ public class PokemonServiceImpl implements PokemonService {
 
     @Autowired
     private MachineSkillRelMapper machineSkillRelMapper;
+
+    @Autowired
+    private PropertyMapper propertyMapper;
+
+    @Autowired
+    private EvolvePokemonRelMapper evolvePokemonRelMapper;
+
+    @Autowired
+    private EvolveSkillRelMapper evolveSkillRelMapper;
 
     @Autowired
     private PokemonAttachmentRelMapper attachmentRelMapper;
@@ -62,18 +68,7 @@ public class PokemonServiceImpl implements PokemonService {
                     QueryPokemonRespVo respVo = new QueryPokemonRespVo();
                     BeanUtils.copyProperties(pokemon, respVo);
                     // 精灵主图
-                    PokemonAttachmentReqVo pokemonAttachmentReqVo = new PokemonAttachmentReqVo();
-                    pokemonAttachmentReqVo.setId(pokemon.getId());
-                    pokemonAttachmentReqVo.setType(PokemonType.LIST.getType());
-                    PokemonAttachmentRel rel = attachmentRelMapper.selectByParam(pokemonAttachmentReqVo)
-                            .stream()
-                            .findAny()
-                            .orElseGet(() -> new PokemonAttachmentRel());
-
-                    String imgUrl = Optional.ofNullable(attachmentMapper.selectByPrimaryKey(rel.getAttachmentId()))
-                            .map(Attachment::getFileUri)
-                            .orElse("");
-                    respVo.setImgUrl(imgUrl);
+                    respVo.setImgUrl(getImgUrl(pokemon.getId()));
                     return respVo;
                 }).collect(Collectors.toList());
 
@@ -129,7 +124,9 @@ public class PokemonServiceImpl implements PokemonService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void insertPokemon(InsertPokemonReqVo reqVo) {
+    public void insert(InsertPokemonReqVo reqVo) {
+        // TODO: 校验图鉴编号尚未使用
+
         // 插入主表
         Pokemon pokemon = new Pokemon();
         BeanUtils.copyProperties(reqVo, pokemon);
@@ -145,8 +142,8 @@ public class PokemonServiceImpl implements PokemonService {
         }
 
         // 插入进化技能表
-        if (!CollectionUtils.isEmpty(reqVo.getEvolutionSkillVos())) {
-            reqVo.getEvolutionSkillVos().stream().forEach(skillVo -> {
+        if (!CollectionUtils.isEmpty(reqVo.getEvolutionSkillReqVos())) {
+            reqVo.getEvolutionSkillReqVos().stream().forEach(skillVo -> {
                 EvolveSkillRel rel = new EvolveSkillRel();
                 rel.setPokemonId(pokemon.getId());
                 rel.setSkillId(skillVo.getId());
@@ -156,8 +153,8 @@ public class PokemonServiceImpl implements PokemonService {
         }
 
         // 插入技能机技能关系表
-        if (!CollectionUtils.isEmpty(reqVo.getMachineSkillVos())) {
-            reqVo.getMachineSkillVos().stream().forEach(skillVo -> {
+        if (!CollectionUtils.isEmpty(reqVo.getMachineSkillReqVos())) {
+            reqVo.getMachineSkillReqVos().stream().forEach(skillVo -> {
                 MachineSkillRel rel = new MachineSkillRel();
                 rel.setPokemonId(pokemon.getId());
                 rel.setSkillId(skillVo.getId());
@@ -166,12 +163,96 @@ public class PokemonServiceImpl implements PokemonService {
         }
     }
 
+    @Override
+    public PokemonDetailRespVo detail(PokemonDetailReqVo reqVo) {
+        // 验参 : 精灵存在
+        Pokemon pokemon = getPokemon(reqVo.getId());
+
+        PokemonDetailRespVo respVo = new PokemonDetailRespVo();
+        BeanUtils.copyProperties(pokemon, respVo);
+        // 精灵属性
+        respVo.setPropertyOneName(getPropertyName(pokemon.getPropertyOne()));
+        respVo.setPropertyTwoName(getPropertyName(pokemon.getPropertyTwo()));
+        // 精灵附件
+        respVo.setImgUrl(getImgUrl(pokemon.getId()));
+        // 进化前精灵id与进化条件
+        EvolvePokemonRel rel = getEvolveRelByPokemonId(pokemon.getId());
+        respVo.setBeforeId(null != rel ? rel.getBeforeId() : null);
+        respVo.setCondition(null != rel ? rel.getCondition() : "");
+
+        // 进化关系全图
+        List<EvolutionRelationshipRespVo> relationshipRespVos = getEvolutionRelationship(pokemon.getId());
+        respVo.setEvolutionRelationshipRespVos(relationshipRespVos);
+
+        // 进化技能
+        List<EvolutionSkillRespVo> evolutionSkillRespVos = evolveSkillRelMapper.selectSkillsByPokemonId(pokemon.getId());
+        respVo.setEvolutionSkillRespVos(evolutionSkillRespVos);
+
+        // 技能机技能
+        List<MachineSkillRespVo> machineSkillRespVos = machineSkillRelMapper.selectSkillsByPokemonId(pokemon.getId());
+        respVo.setMachineSkillRespVos(machineSkillRespVos);
+        
+        return respVo;
+    }
+
+
+    /**
+     * 根据精灵id获取进化关系全图
+     */
+    private List<EvolutionRelationshipRespVo> getEvolutionRelationship(Integer pokemonId) {
+        // 进化关系链
+        List<EvolvePokemonRel> pokemonRels = new ArrayList<>();
+        // 获取父系进化链
+        getParentEvolutionRelationship(pokemonId, pokemonRels);
+        // 获取子系进化链
+        getChildEvolutionRelationship(pokemonId, pokemonRels);
+
+        List<EvolutionRelationshipRespVo> respVos = new ArrayList<>();
+        Integer seq = 1;
+        for (EvolvePokemonRel rel : pokemonRels) {
+            EvolutionRelationshipRespVo respVo = new EvolutionRelationshipRespVo();
+            // 序号
+            respVo.setSeq(seq++);
+            // 精灵信息
+            Pokemon pokemon = getPokemon(rel.getPokemonId());
+            respVo.setId(pokemon.getId());
+            respVo.setName(pokemon.getName());
+            // 进化条件
+            respVo.setCondition(rel.getCondition());
+            // 精灵图片
+            String imgUrl = getImgUrl(pokemon.getId());
+            respVo.setImgUrl(imgUrl);
+            respVos.add(respVo);
+        }
+
+        return respVos;
+    }
+
+
     /**
      * 根据id获取精灵
      */
     private Pokemon getPokemon(Integer id) {
         return Optional.ofNullable(pokemonMapper.selectByPrimaryKey(id))
                 .orElseThrow(() -> new RetException(PokemonMessage.INVALID_POKEMON_CODE, PokemonMessage.INVALID_POKEMON_MSG));
+    }
+
+    /**
+     * 根据精灵id获取精灵主图
+     */
+    private String getImgUrl(Integer pokemonId) {
+        // 精灵主图
+        PokemonAttachmentReqVo pokemonAttachmentReqVo = new PokemonAttachmentReqVo();
+        pokemonAttachmentReqVo.setId(pokemonId);
+        pokemonAttachmentReqVo.setType(PokemonType.LIST.getType());
+        PokemonAttachmentRel rel = attachmentRelMapper.selectByParam(pokemonAttachmentReqVo)
+                .stream()
+                .findAny()
+                .orElseGet(() -> new PokemonAttachmentRel());
+
+        return Optional.ofNullable(attachmentMapper.selectByPrimaryKey(rel.getAttachmentId()))
+                .map(Attachment::getFileUri)
+                .orElse("");
     }
 
     /**
@@ -192,5 +273,52 @@ public class PokemonServiceImpl implements PokemonService {
         return Optional.ofNullable(kind)
                 .map(id -> map.get(id))
                 .orElse(null);
+    }
+
+    /**
+     * 根据property_id获取property_name
+     */
+    private String getPropertyName(Integer id) {
+        return Optional.ofNullable(propertyMapper.selectByPrimaryKey(id))
+                .map(Property::getName)
+                .orElse("");
+    }
+
+    /**
+     * 根据精灵id获取进化关系(获取直系父系)
+     */
+    private EvolvePokemonRel getEvolveRelByPokemonId(Integer pokemonId) {
+        return Optional.ofNullable(evolvePokemonRelMapper.selectByPokemonId(pokemonId))
+                .orElse(null);
+    }
+
+    /**
+     * 根据精灵id获取进化关系(获取直系子系)
+     */
+    private EvolvePokemonRel getEvolveRelByBeforeId(Integer beforeId) {
+        return Optional.ofNullable(evolvePokemonRelMapper.selectByBeforeId(beforeId))
+                .orElse(null);
+    }
+
+    /**
+     * 根据精灵id获取进化关系(获取所有父系)
+     */
+    private void getParentEvolutionRelationship(Integer pokemonId, List<EvolvePokemonRel> pokemonRels) {
+        EvolvePokemonRel rel = getEvolveRelByPokemonId(pokemonId);
+        if (null != rel) {
+            pokemonRels.add(0, rel);
+            getParentEvolutionRelationship(rel.getBeforeId(), pokemonRels);
+        }
+    }
+
+    /**
+     * 根据精灵id获取进化关系(获取所有子系)
+     */
+    private void getChildEvolutionRelationship(Integer beforeId, List<EvolvePokemonRel> pokemonRels) {
+        EvolvePokemonRel rel = getEvolveRelByBeforeId(beforeId);
+        if (null != rel) {
+            pokemonRels.add(rel);
+            getChildEvolutionRelationship(rel.getPokemonId(), pokemonRels);
+        }
     }
 }
