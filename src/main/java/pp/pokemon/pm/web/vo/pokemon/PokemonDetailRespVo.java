@@ -49,9 +49,9 @@ public class PokemonDetailRespVo {
     // 进化条件
     private String condition;
 
-    private List<EvolutionRelationshipRespVo> evolutionRelationshipRespVos;
+    private List<EvolutionRelationshipRespVo> evolutionRelationship;
 
-    private List<EvolutionSkillRespVo> evolutionSkillRespVos;
+    private List<EvolutionSkillRespVo> evolutionSkills;
 
-    private List<MachineSkillRespVo> machineSkillRespVos;
+    private List<MachineSkillRespVo> machineSkills;
 }

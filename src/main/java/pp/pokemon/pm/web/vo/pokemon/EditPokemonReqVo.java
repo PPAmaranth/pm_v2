@@ -15,7 +15,7 @@ public class EditPokemonReqVo {
 
     private Integer illustrationBookId;
 
-    @NotBlank(message = "技能名称不能为空")
+    @NotBlank(message = "精灵名称不能为空")
     private String name;
 
     private String jpName;
@@ -50,8 +50,8 @@ public class EditPokemonReqVo {
 
     private EvolutionRelationshipReqVo evolutionRelationship;
 
-    private List<EvolutionSkillReqVo> evolutionSkillReqVos;
+    private List<EvolutionSkillReqVo> evolutionSkills;
 
     @Size(max = 50, message = "技能机技能数量最多50")
-    private List<MachineSkillReqVo> machineSkillReqVos;
+    private List<MachineSkillReqVo> machineSkills;
 }

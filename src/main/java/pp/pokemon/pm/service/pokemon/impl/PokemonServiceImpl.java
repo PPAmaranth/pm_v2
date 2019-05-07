@@ -172,15 +172,15 @@ public class PokemonServiceImpl implements PokemonService {
 
         // 进化关系全图
         List<EvolutionRelationshipRespVo> relationshipRespVos = getEvolutionRelationship(pokemon.getId());
-        respVo.setEvolutionRelationshipRespVos(relationshipRespVos);
+        respVo.setEvolutionRelationship(relationshipRespVos);
 
         // 进化技能
         List<EvolutionSkillRespVo> evolutionSkillRespVos = evolveSkillRelMapper.selectSkillsByPokemonId(pokemon.getId());
-        respVo.setEvolutionSkillRespVos(evolutionSkillRespVos);
+        respVo.setEvolutionSkills(evolutionSkillRespVos);
 
         // 技能机技能
         List<MachineSkillRespVo> machineSkillRespVos = machineSkillRelMapper.selectSkillsByPokemonId(pokemon.getId());
-        respVo.setMachineSkillRespVos(machineSkillRespVos);
+        respVo.setMachineSkills(machineSkillRespVos);
         
         return respVo;
     }
@@ -206,8 +206,8 @@ public class PokemonServiceImpl implements PokemonService {
         }
 
         // 更新进化技能表
-        if (!CollectionUtils.isEmpty(reqVo.getEvolutionSkillReqVos())) {
-            reqVo.getEvolutionSkillReqVos().stream().forEach(skillVo -> {
+        if (!CollectionUtils.isEmpty(reqVo.getEvolutionSkills())) {
+            reqVo.getEvolutionSkills().stream().forEach(skillVo -> {
                 EvolveSkillRel rel = new EvolveSkillRel();
                 rel.setPokemonId(pokemon.getId());
                 rel.setSkillId(skillVo.getId());
@@ -217,8 +217,8 @@ public class PokemonServiceImpl implements PokemonService {
         }
 
         // 更新技能机技能关系表
-        if (!CollectionUtils.isEmpty(reqVo.getMachineSkillReqVos())) {
-            reqVo.getMachineSkillReqVos().stream().forEach(skillVo -> {
+        if (!CollectionUtils.isEmpty(reqVo.getMachineSkills())) {
+            reqVo.getMachineSkills().stream().forEach(skillVo -> {
                 MachineSkillRel rel = new MachineSkillRel();
                 rel.setPokemonId(pokemon.getId());
                 rel.setSkillId(skillVo.getId());
@@ -299,7 +299,7 @@ public class PokemonServiceImpl implements PokemonService {
     private String getPropertyName(Integer id) {
         return Optional.ofNullable(propertyMapper.selectByPrimaryKey(id))
                 .map(Property::getName)
-                .orElse("");
+                .orElse(null);
     }
 
     /**
@@ -356,7 +356,7 @@ public class PokemonServiceImpl implements PokemonService {
             // 序号
             respVo.setSeq(seq++);
             // 精灵信息
-            Pokemon pokemon = getPokemon(rel.getPokemonId());
+            Pokemon pokemon = getPokemon(rel.getBeforeId());
             respVo.setId(pokemon.getId());
             respVo.setName(pokemon.getName());
             // 进化条件
@@ -367,6 +367,21 @@ public class PokemonServiceImpl implements PokemonService {
             respVos.add(respVo);
         }
 
+        // 加上进化的最终形态
+        if (!CollectionUtils.isEmpty(respVos)) {
+            EvolutionRelationshipRespVo respVo = new EvolutionRelationshipRespVo();
+            // 序号
+            respVo.setSeq(seq++);
+            EvolvePokemonRel rel = pokemonRels.get(pokemonRels.size()-1);
+            // 精灵信息
+            Pokemon pokemon = getPokemon(rel.getPokemonId());
+            respVo.setId(pokemon.getId());
+            respVo.setName(pokemon.getName());
+            // 精灵图片
+            String imgUrl = getImgUrl(pokemon.getId());
+            respVo.setImgUrl(imgUrl);
+            respVos.add(respVo);
+        }
         return respVos;
     }
 }
