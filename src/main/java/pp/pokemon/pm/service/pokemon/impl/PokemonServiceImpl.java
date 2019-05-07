@@ -16,10 +16,7 @@ import pp.pokemon.pm.dao.mapper.pokemon.*;
 import pp.pokemon.pm.dao.vo.pokemon.*;
 import pp.pokemon.pm.service.pokemon.PokemonService;
 import pp.pokemon.pm.dao.vo.file.BatchInsertPokemonVo;
-import pp.pokemon.pm.web.vo.pokemon.EvolutionRelationshipRespVo;
-import pp.pokemon.pm.web.vo.pokemon.PokemonAttachmentRespVo;
-import pp.pokemon.pm.web.vo.pokemon.PokemonDetailRespVo;
-import pp.pokemon.pm.web.vo.pokemon.QueryPokemonRespVo;
+import pp.pokemon.pm.web.vo.pokemon.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -41,12 +38,6 @@ public class PokemonServiceImpl implements PokemonService {
 
     @Autowired
     private PropertyMapper propertyMapper;
-
-    @Autowired
-    private EvolvePokemonRelMapper evolvePokemonRelMapper;
-
-    @Autowired
-    private EvolveSkillRelMapper evolveSkillRelMapper;
 
     @Autowired
     private PokemonAttachmentRelMapper attachmentRelMapper;
@@ -124,7 +115,7 @@ public class PokemonServiceImpl implements PokemonService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void insert(InsertPokemonReqVo reqVo) {
+    public void add(AddPokemonReqVo reqVo) {
 
         // 插入主表
         Pokemon pokemon = new Pokemon();
@@ -194,37 +185,65 @@ public class PokemonServiceImpl implements PokemonService {
         return respVo;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void edit(EditPokemonReqVo reqVo) {
+        // 验参 : 精灵存在
+        Pokemon pokemon = getPokemon(reqVo.getId());
+        BeanUtils.copyProperties(reqVo, pokemon);
+        pokemonMapper.updateByPrimaryKey(pokemon);
 
-    /**
-     * 根据精灵id获取进化关系全图
-     */
-    private List<EvolutionRelationshipRespVo> getEvolutionRelationship(Integer pokemonId) {
-        // 进化关系链
-        List<EvolvePokemonRel> pokemonRels = new ArrayList<>();
-        // 获取父系进化链
-        getParentEvolutionRelationship(pokemonId, pokemonRels);
-        // 获取子系进化链
-        getChildEvolutionRelationship(pokemonId, pokemonRels);
+        // 清除精灵进化,技能关系
+        deletePokemonRels(pokemon.getId());
 
-        List<EvolutionRelationshipRespVo> respVos = new ArrayList<>();
-        Integer seq = 1;
-        for (EvolvePokemonRel rel : pokemonRels) {
-            EvolutionRelationshipRespVo respVo = new EvolutionRelationshipRespVo();
-            // 序号
-            respVo.setSeq(seq++);
-            // 精灵信息
-            Pokemon pokemon = getPokemon(rel.getPokemonId());
-            respVo.setId(pokemon.getId());
-            respVo.setName(pokemon.getName());
-            // 进化条件
-            respVo.setCondition(rel.getCondition());
-            // 精灵图片
-            String imgUrl = getImgUrl(pokemon.getId());
-            respVo.setImgUrl(imgUrl);
-            respVos.add(respVo);
+        // 更新进化关系表
+        if (null != reqVo.getEvolutionRelationship()) {
+            EvolvePokemonRel rel = new EvolvePokemonRel();
+            rel.setPokemonId(pokemon.getId());
+            rel.setBeforeId(reqVo.getEvolutionRelationship().getBeforeId());
+            rel.setCondition(reqVo.getEvolutionRelationship().getCondition());
+            evolvePokemonRelMapper.insert(rel);
         }
 
-        return respVos;
+        // 更新进化技能表
+        if (!CollectionUtils.isEmpty(reqVo.getEvolutionSkillReqVos())) {
+            reqVo.getEvolutionSkillReqVos().stream().forEach(skillVo -> {
+                EvolveSkillRel rel = new EvolveSkillRel();
+                rel.setPokemonId(pokemon.getId());
+                rel.setSkillId(skillVo.getId());
+                rel.setLevel(skillVo.getLevel());
+                evolveSkillRelMapper.insert(rel);
+            });
+        }
+
+        // 更新技能机技能关系表
+        if (!CollectionUtils.isEmpty(reqVo.getMachineSkillReqVos())) {
+            reqVo.getMachineSkillReqVos().stream().forEach(skillVo -> {
+                MachineSkillRel rel = new MachineSkillRel();
+                rel.setPokemonId(pokemon.getId());
+                rel.setSkillId(skillVo.getId());
+                machineSkillRelMapper.insert(rel);
+            });
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(PokemonDeleteReqVo reqVo) {
+        // 清除精灵进化,技能关系
+        deletePokemonRels(reqVo.getId());
+
+        // 删除精灵
+        pokemonMapper.deleteByPrimaryKey(reqVo.getId());
+    }
+
+    /**
+     * 根据id清除精灵进化,技能关系
+     */
+    private void deletePokemonRels(Integer pokemonId) {
+        evolvePokemonRelMapper.deleteByPokemonId(pokemonId);
+        evolveSkillRelMapper.deleteByPokemonId(pokemonId);
+        machineSkillRelMapper.deleteByPokemonId(pokemonId);
     }
 
 
@@ -287,16 +306,14 @@ public class PokemonServiceImpl implements PokemonService {
      * 根据精灵id获取进化关系(获取直系父系)
      */
     private EvolvePokemonRel getEvolveRelByPokemonId(Integer pokemonId) {
-        return Optional.ofNullable(evolvePokemonRelMapper.selectByPokemonId(pokemonId))
-                .orElse(null);
+        return evolvePokemonRelMapper.selectByPokemonId(pokemonId);
     }
 
     /**
      * 根据精灵id获取进化关系(获取直系子系)
      */
     private EvolvePokemonRel getEvolveRelByBeforeId(Integer beforeId) {
-        return Optional.ofNullable(evolvePokemonRelMapper.selectByBeforeId(beforeId))
-                .orElse(null);
+        return evolvePokemonRelMapper.selectByBeforeId(beforeId);
     }
 
     /**
@@ -319,5 +336,37 @@ public class PokemonServiceImpl implements PokemonService {
             pokemonRels.add(rel);
             getChildEvolutionRelationship(rel.getPokemonId(), pokemonRels);
         }
+    }
+
+    /**
+     * 根据精灵id获取进化关系全图
+     */
+    private List<EvolutionRelationshipRespVo> getEvolutionRelationship(Integer pokemonId) {
+        // 进化关系链
+        List<EvolvePokemonRel> pokemonRels = new ArrayList<>();
+        // 获取父系进化链
+        getParentEvolutionRelationship(pokemonId, pokemonRels);
+        // 获取子系进化链
+        getChildEvolutionRelationship(pokemonId, pokemonRels);
+
+        List<EvolutionRelationshipRespVo> respVos = new ArrayList<>();
+        Integer seq = 1;
+        for (EvolvePokemonRel rel : pokemonRels) {
+            EvolutionRelationshipRespVo respVo = new EvolutionRelationshipRespVo();
+            // 序号
+            respVo.setSeq(seq++);
+            // 精灵信息
+            Pokemon pokemon = getPokemon(rel.getPokemonId());
+            respVo.setId(pokemon.getId());
+            respVo.setName(pokemon.getName());
+            // 进化条件
+            respVo.setCondition(rel.getCondition());
+            // 精灵图片
+            String imgUrl = getImgUrl(pokemon.getId());
+            respVo.setImgUrl(imgUrl);
+            respVos.add(respVo);
+        }
+
+        return respVos;
     }
 }

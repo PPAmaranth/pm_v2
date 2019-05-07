@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import pp.pokemon.pm.common.util.BeanValidators;
-import pp.pokemon.pm.dao.vo.pokemon.InsertPokemonReqVo;
-import pp.pokemon.pm.dao.vo.pokemon.PokemonDetailReqVo;
+import pp.pokemon.pm.web.vo.pokemon.AddPokemonReqVo;
+import pp.pokemon.pm.web.vo.pokemon.EditPokemonReqVo;
+import pp.pokemon.pm.web.vo.pokemon.PokemonDeleteReqVo;
+import pp.pokemon.pm.web.vo.pokemon.PokemonDetailReqVo;
 import pp.pokemon.pm.service.pokemon.PokemonService;
 import pp.pokemon.pm.web.controller.BaseController;
 import pp.pokemon.pm.web.vo.base.DefaultApiResult;
@@ -40,10 +42,10 @@ public class PokemonController extends BaseController {
         return success(pokemonService.getPokemonAttachment(reqVo));
     }
 
-    @RequestMapping(value = "/insert", method = {RequestMethod.POST})
-    public DefaultApiResult insert(@RequestBody InsertPokemonReqVo reqVo) {
+    @RequestMapping(value = "/add", method = {RequestMethod.POST})
+    public DefaultApiResult add(@RequestBody AddPokemonReqVo reqVo) {
         BeanValidators.validateWithParameterException(validator, reqVo);
-        pokemonService.insert(reqVo);
+        pokemonService.add(reqVo);
         return success();
     }
 
@@ -51,5 +53,19 @@ public class PokemonController extends BaseController {
     public DefaultApiResult detail(@RequestBody PokemonDetailReqVo reqVo) {
         BeanValidators.validateWithParameterException(validator, reqVo);
         return success(pokemonService.detail(reqVo));
+    }
+
+    @RequestMapping(value = "/edit", method = {RequestMethod.POST})
+    public DefaultApiResult edit(@RequestBody EditPokemonReqVo reqVo) {
+        BeanValidators.validateWithParameterException(validator, reqVo);
+        pokemonService.edit(reqVo);
+        return success();
+    }
+
+    @RequestMapping(value = "/delete", method = {RequestMethod.POST})
+    public DefaultApiResult delete(@RequestBody PokemonDeleteReqVo reqVo) {
+        BeanValidators.validateWithParameterException(validator, reqVo);
+        pokemonService.delete(reqVo);
+        return success();
     }
 }

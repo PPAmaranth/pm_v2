@@ -19,4 +19,6 @@ public interface EvolvePokemonRelMapper {
     EvolvePokemonRel selectByPokemonId(@Param("pokemonId")Integer pokemonId);
 
     EvolvePokemonRel selectByBeforeId(@Param("beforeId")Integer beforeId);
+
+    int deleteByPokemonId(@Param("pokemonId")Integer pokemonId);
 }

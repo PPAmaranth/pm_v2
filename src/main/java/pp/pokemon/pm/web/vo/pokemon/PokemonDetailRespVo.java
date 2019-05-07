@@ -3,7 +3,6 @@ package pp.pokemon.pm.web.vo.pokemon;
 import lombok.Data;
 import pp.pokemon.pm.dao.vo.pokemon.EvolutionSkillRespVo;
 import pp.pokemon.pm.dao.vo.pokemon.MachineSkillRespVo;
-import pp.pokemon.pm.web.vo.pokemon.EvolutionRelationshipRespVo;
 
 import java.util.List;
 

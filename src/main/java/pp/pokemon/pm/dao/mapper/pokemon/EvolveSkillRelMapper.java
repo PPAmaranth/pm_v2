@@ -20,4 +20,6 @@ public interface EvolveSkillRelMapper {
     int updateByPrimaryKey(EvolveSkillRel record);
 
     List<EvolutionSkillRespVo> selectSkillsByPokemonId(@Param("pokemonId") Integer pokemonId);
+
+    int deleteByPokemonId(@Param("pokemonId") Integer pokemonId);
 }

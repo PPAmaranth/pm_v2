@@ -77,5 +77,8 @@
     left join skill on machine_skill_rel.skill_id = skill.id
     where machine_skill_rel.pokemon_id = #{pokemonId,jdbcType=INTEGER}
   </select>
-
+  <delete id="deleteByPokemonId" parameterType="java.lang.Integer">
+    delete from machine_skill_rel
+    where pokemon_id = #{pokemonId,jdbcType=INTEGER}
+  </delete>
 </mapper>

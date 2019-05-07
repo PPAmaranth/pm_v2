@@ -20,4 +20,6 @@ public interface MachineSkillRelMapper {
     int updateByPrimaryKey(MachineSkillRel record);
 
     List<MachineSkillRespVo> selectSkillsByPokemonId(@Param("pokemonId") Integer pokemonId);
+
+    int deleteByPokemonId(@Param("pokemonId") Integer pokemonId);
 }

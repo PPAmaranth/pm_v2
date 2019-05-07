@@ -16,7 +16,7 @@
     from evolve_skill_rel
     where id = #{id,jdbcType=INTEGER}
   </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from evolve_skill_rel
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -88,4 +88,8 @@
     left join skill on evolve_skill_rel.skill_id = skill.id
     where evolve_skill_rel.pokemon_id = #{pokemonId,jdbcType=INTEGER}
   </select>
+  <delete id="deleteByPokemonId" parameterType="java.lang.Integer">
+    delete from evolve_skill_rel
+    where pokemon_id = #{pokemonId,jdbcType=INTEGER}
+  </delete>
 </mapper>

@@ -1,4 +1,4 @@
-package pp.pokemon.pm.dao.vo.pokemon;
+package pp.pokemon.pm.web.vo.pokemon;
 
 import lombok.Data;
 
@@ -8,7 +8,10 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
-public class InsertPokemonReqVo {
+public class EditPokemonReqVo {
+
+    @NotNull(message = "精灵id不为空")
+    private Integer id;
 
     private Integer illustrationBookId;
 

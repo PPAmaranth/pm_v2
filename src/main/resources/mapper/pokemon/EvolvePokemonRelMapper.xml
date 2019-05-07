@@ -91,4 +91,8 @@
     from evolve_pokemon_rel
     where before_id = #{beforeId,jdbcType=INTEGER}
   </select>
+  <delete id="deleteByPokemonId" parameterType="java.lang.Integer">
+    delete from evolve_pokemon_rel
+    where pokemon_id = #{pokemonId,jdbcType=INTEGER}
+  </delete>
 </mapper>
