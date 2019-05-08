@@ -68,4 +68,18 @@
       en_name = #{enName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="pp.pokemon.pm.dao.vo.property.PropertyListReqVo">
+    select
+      <include refid="Base_Column_List" />
+    from property
+    <where>
+      <if test="word != null and word.size() > 0">
+        (
+          name like concat('%',#{word,jdbcType=VARCHAR},'%')
+          or en_name like concat('%',#{word,jdbcType=VARCHAR},'%')
+        )
+      </if>
+    </where>
+  </select>
+
 </mapper>

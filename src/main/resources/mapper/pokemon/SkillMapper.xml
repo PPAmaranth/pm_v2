@@ -6,8 +6,8 @@
     <result column="cn_name" jdbcType="VARCHAR" property="cnName" />
     <result column="jp_name" jdbcType="VARCHAR" property="jpName" />
     <result column="en_name" jdbcType="VARCHAR" property="enName" />
-    <result column="property" jdbcType="VARCHAR" property="property" />
-    <result column="classification" jdbcType="VARCHAR" property="classification" />
+    <result column="property" jdbcType="INTEGER" property="property" />
+    <result column="classification" jdbcType="INTEGER" property="classification" />
     <result column="power" jdbcType="INTEGER" property="power" />
     <result column="hit_probability" jdbcType="INTEGER" property="hitProbability" />
     <result column="PP" jdbcType="INTEGER" property="pp" />
@@ -34,7 +34,7 @@
       power, hit_probability, PP, 
       is_machine_skill, machine_skill_code)
     values (#{id,jdbcType=INTEGER}, #{cnName,jdbcType=VARCHAR}, #{jpName,jdbcType=VARCHAR}, 
-      #{enName,jdbcType=VARCHAR}, #{property,jdbcType=VARCHAR}, #{classification,jdbcType=VARCHAR}, 
+      #{enName,jdbcType=VARCHAR}, #{property,jdbcType=INTEGER}, #{classification,jdbcType=INTEGER},
       #{power,jdbcType=INTEGER}, #{hitProbability,jdbcType=INTEGER}, #{pp,jdbcType=INTEGER}, 
       #{isMachineSkill,jdbcType=INTEGER}, #{machineSkillCode,jdbcType=VARCHAR})
   </insert>
@@ -89,10 +89,10 @@
         #{enName,jdbcType=VARCHAR},
       </if>
       <if test="property != null">
-        #{property,jdbcType=VARCHAR},
+        #{property,jdbcType=INTEGER},
       </if>
       <if test="classification != null">
-        #{classification,jdbcType=VARCHAR},
+        #{classification,jdbcType=INTEGER},
       </if>
       <if test="power != null">
         #{power,jdbcType=INTEGER},
@@ -124,10 +124,10 @@
         en_name = #{enName,jdbcType=VARCHAR},
       </if>
       <if test="property != null">
-        property = #{property,jdbcType=VARCHAR},
+        property = #{property,jdbcType=INTEGER},
       </if>
       <if test="classification != null">
-        classification = #{classification,jdbcType=VARCHAR},
+        classification = #{classification,jdbcType=INTEGER},
       </if>
       <if test="power != null">
         power = #{power,jdbcType=INTEGER},
@@ -152,8 +152,8 @@
     set cn_name = #{cnName,jdbcType=VARCHAR},
       jp_name = #{jpName,jdbcType=VARCHAR},
       en_name = #{enName,jdbcType=VARCHAR},
-      property = #{property,jdbcType=VARCHAR},
-      classification = #{classification,jdbcType=VARCHAR},
+      property = #{property,jdbcType=INTEGER},
+      classification = #{classification,jdbcType=INTEGER},
       power = #{power,jdbcType=INTEGER},
       hit_probability = #{hitProbability,jdbcType=INTEGER},
       PP = #{pp,jdbcType=INTEGER},
@@ -161,4 +161,51 @@
       machine_skill_code = #{machineSkillCode,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="queryByParam" resultMap="BaseResultMap" parameterType="pp.pokemon.pm.dao.vo.skill.QuerySkillListReqVo">
+    select
+    <include refid="Base_Column_List" />
+    from skill
+    <where>
+      <if test="word != null and word.size() > 0">
+        (
+          cn_name like concat('%',#{word,jdbcType=VARCHAR},'%')
+          or jp_name like concat('%',#{word,jdbcType=VARCHAR},'%')
+          or en_name like concat('%',#{word,jdbcType=VARCHAR},'%')
+        )
+      </if>
+      <if test="property != null">
+        and property = #{property,jdbcType=INTEGER}
+      </if>
+      <if test="classification != null">
+        and classification = #{classification,jdbcType=INTEGER}
+      </if>
+      <if test="isMachineSkill != null">
+        and is_machine_skill = #{isMachineSkill,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+  <select id="simpleQueryByParam" parameterType="pp.pokemon.pm.dao.vo.skill.SimpleSkillListReqVo" resultType="pp.pokemon.pm.dao.vo.skill.SimpleSkillListRespVo">
+    select
+      id,
+      cn_name `name`
+    from skill
+    <where>
+      <if test="word != null and word.size() > 0">
+        (
+        cn_name like concat('%',#{word,jdbcType=VARCHAR},'%')
+        or jp_name like concat('%',#{word,jdbcType=VARCHAR},'%')
+        or en_name like concat('%',#{word,jdbcType=VARCHAR},'%')
+        )
+      </if>
+      <if test="property != null">
+        and property = #{property,jdbcType=INTEGER}
+      </if>
+      <if test="classification != null">
+        and classification = #{classification,jdbcType=INTEGER}
+      </if>
+      <if test="isMachineSkill != null">
+        and is_machine_skill = #{isMachineSkill,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
 </mapper>

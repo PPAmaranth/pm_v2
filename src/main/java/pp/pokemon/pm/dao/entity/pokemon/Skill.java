@@ -9,9 +9,9 @@ public class Skill {
 
     private String enName;
 
-    private String property;
+    private Integer property;
 
-    private String classification;
+    private Integer classification;
 
     private Integer power;
 
@@ -55,19 +55,19 @@ public class Skill {
         this.enName = enName;
     }
 
-    public String getProperty() {
+    public Integer getProperty() {
         return property;
     }
 
-    public void setProperty(String property) {
+    public void setProperty(Integer property) {
         this.property = property;
     }
 
-    public String getClassification() {
+    public Integer getClassification() {
         return classification;
     }
 
-    public void setClassification(String classification) {
+    public void setClassification(Integer classification) {
         this.classification = classification;
     }
 
