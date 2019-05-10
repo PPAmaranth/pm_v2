@@ -7,7 +7,7 @@ import java.util.Map;
 public enum SkillClassification {
 
     PHYSICAL(1, "物理"),
-    SPECIAL(2, "特攻"),
+    SPECIAL(2, "特殊"),
     TRANSFORMATIONAL(3, "变化"),
     ;
 

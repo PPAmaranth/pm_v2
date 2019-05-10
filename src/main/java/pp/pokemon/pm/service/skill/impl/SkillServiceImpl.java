@@ -6,13 +6,17 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import pp.pokemon.pm.common.constant.RetException;
+import pp.pokemon.pm.common.enums.common.YesNo;
 import pp.pokemon.pm.common.enums.skill.SkillClassification;
 import pp.pokemon.pm.common.message.SkillMessage;
 import pp.pokemon.pm.dao.entity.pokemon.Property;
 import pp.pokemon.pm.dao.entity.pokemon.Skill;
 import pp.pokemon.pm.dao.mapper.pokemon.PropertyMapper;
 import pp.pokemon.pm.dao.mapper.pokemon.SkillMapper;
+import pp.pokemon.pm.dao.vo.property.PropertyListReqVo;
+import pp.pokemon.pm.dao.vo.skill.BatchAddSkillReqVo;
 import pp.pokemon.pm.dao.vo.skill.QuerySkillListReqVo;
 import pp.pokemon.pm.dao.vo.skill.SimpleSkillListReqVo;
 import pp.pokemon.pm.dao.vo.skill.SimpleSkillListRespVo;
@@ -82,6 +86,10 @@ public class SkillServiceImpl implements SkillService {
         Skill skill = getSkill(reqVo.getId());
         SkillDetailRespVo respVo = new SkillDetailRespVo();
         BeanUtils.copyProperties(skill, respVo);
+        // 属性名
+        respVo.setPropertyName(getProperty(skill.getProperty()));
+        // 分类名
+        respVo.setClassificationName(getClassification(skill.getClassification()));
         return respVo;
     }
 
@@ -90,6 +98,45 @@ public class SkillServiceImpl implements SkillService {
         PageHelper.startPage(reqVo.getPageNum(), reqVo.getPageSize());
         List<SimpleSkillListRespVo> respVos = skillMapper.simpleQueryByParam(reqVo);
         return new PageInfo<>(respVos);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void batchAdd(List<BatchAddSkillReqVo> reqVos) {
+        List<Property> properties = propertyMapper.selectByParam(new PropertyListReqVo());
+
+        if (!CollectionUtils.isEmpty(reqVos)) {
+            reqVos.stream().forEach(reqVo -> {
+                Skill skill = new Skill();
+                skill.setCnName(reqVo.getCn_name());
+                skill.setJpName(reqVo.getJp_name());
+                skill.setEnName(reqVo.getEn_name());
+                // property
+                Integer property = properties.stream()
+                        .filter(prop -> prop.getName().equals(reqVo.getPropery()))
+                        .map(Property::getId)
+                        .findAny()
+                        .orElse(null);
+                skill.setProperty(property);
+                // classification
+                if (SkillClassification.PHYSICAL.getName().equals(reqVo.getClassfication())) {
+                    skill.setClassification(SkillClassification.PHYSICAL.getId());
+                }
+                if (SkillClassification.SPECIAL.getName().equals(reqVo.getClassfication())) {
+                    skill.setClassification(SkillClassification.SPECIAL.getId());
+                }
+                if (SkillClassification.TRANSFORMATIONAL.getName().equals(reqVo.getClassfication())) {
+                    skill.setClassification(SkillClassification.TRANSFORMATIONAL.getId());
+                }
+                // 其他属性
+                skill.setPower(reqVo.getPower());
+                skill.setHitProbability(reqVo.getHit_probability());
+                skill.setPp(reqVo.getPp());
+                // 默认非技能机技能
+                skill.setIsMachineSkill(YesNo.NO.getId());
+                skillMapper.insert(skill);
+            });
+        }
     }
 
 

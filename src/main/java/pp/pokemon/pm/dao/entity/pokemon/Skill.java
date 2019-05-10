@@ -13,11 +13,11 @@ public class Skill {
 
     private Integer classification;
 
-    private Integer power;
+    private String power;
 
-    private Integer hitProbability;
+    private String hitProbability;
 
-    private Integer pp;
+    private String pp;
 
     private Integer isMachineSkill;
 
@@ -71,27 +71,27 @@ public class Skill {
         this.classification = classification;
     }
 
-    public Integer getPower() {
+    public String getPower() {
         return power;
     }
 
-    public void setPower(Integer power) {
+    public void setPower(String power) {
         this.power = power;
     }
 
-    public Integer getHitProbability() {
+    public String getHitProbability() {
         return hitProbability;
     }
 
-    public void setHitProbability(Integer hitProbability) {
+    public void setHitProbability(String hitProbability) {
         this.hitProbability = hitProbability;
     }
 
-    public Integer getPp() {
+    public String getPp() {
         return pp;
     }
 
-    public void setPp(Integer pp) {
+    public void setPp(String pp) {
         this.pp = pp;
     }
 

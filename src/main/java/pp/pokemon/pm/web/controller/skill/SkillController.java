@@ -6,12 +6,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import pp.pokemon.pm.common.util.BeanValidators;
+import pp.pokemon.pm.dao.vo.skill.BatchAddSkillReqVo;
 import pp.pokemon.pm.dao.vo.skill.QuerySkillListReqVo;
 import pp.pokemon.pm.dao.vo.skill.SimpleSkillListReqVo;
 import pp.pokemon.pm.service.skill.SkillService;
 import pp.pokemon.pm.web.controller.BaseController;
 import pp.pokemon.pm.web.vo.base.DefaultApiResult;
 import pp.pokemon.pm.web.vo.skill.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/skill")
@@ -55,5 +58,12 @@ public class SkillController extends BaseController {
     @RequestMapping(value = "/simpleList", method = {RequestMethod.POST})
     public DefaultApiResult simpleList(@RequestBody SimpleSkillListReqVo reqVo){
         return success(skillService.simpleList(reqVo));
+    }
+
+    @RequestMapping(value = "batchAdd", method = {RequestMethod.POST})
+    public DefaultApiResult batchAdd(@RequestBody List<BatchAddSkillReqVo> reqVos) {
+        BeanValidators.validateWithParameterException(validator, reqVos);
+        skillService.batchAdd(reqVos);
+        return success();
     }
 }

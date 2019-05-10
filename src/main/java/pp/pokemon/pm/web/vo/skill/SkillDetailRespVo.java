@@ -16,13 +16,17 @@ public class SkillDetailRespVo {
 
     private Integer property;
 
+    private String propertyName;
+
     private Integer classification;
 
-    private Integer power;
+    private String classificationName;
 
-    private Integer hitProbability;
+    private String power;
 
-    private Integer pp;
+    private String hitProbability;
+
+    private String pp;
 
     private Integer isMachineSkill;
 

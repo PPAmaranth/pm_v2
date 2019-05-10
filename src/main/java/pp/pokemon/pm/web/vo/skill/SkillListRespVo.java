@@ -21,11 +21,11 @@ public class SkillListRespVo {
 
     private String classificationName;
 
-    private Integer power;
+    private String power;
 
-    private Integer hitProbability;
+    private String hitProbability;
 
-    private Integer pp;
+    private String pp;
 
     private Integer isMachineSkill;
 
