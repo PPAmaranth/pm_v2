@@ -9,7 +9,7 @@ public class QueryPokemonRespVo {
 
     private Integer illustrationBookId;
 
-    private String name;
+    private String cnName;
 
     private String jpName;
 

@@ -13,7 +13,7 @@ public class AddPokemonReqVo {
     private Integer illustrationBookId;
 
     @NotBlank(message = "精灵名称不能为空")
-    private String name;
+    private String cnName;
 
     private String jpName;
 

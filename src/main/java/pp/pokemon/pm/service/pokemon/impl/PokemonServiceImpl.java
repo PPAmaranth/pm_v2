@@ -58,6 +58,8 @@ public class PokemonServiceImpl implements PokemonService {
                 .map(pokemon -> {
                     QueryPokemonRespVo respVo = new QueryPokemonRespVo();
                     BeanUtils.copyProperties(pokemon, respVo);
+                    // 精灵名字
+                    respVo.setCnName(pokemon.getName());
                     // 精灵主图
                     respVo.setImgUrl(getImgUrl(pokemon.getId()));
                     return respVo;
@@ -120,6 +122,7 @@ public class PokemonServiceImpl implements PokemonService {
         // 插入主表
         Pokemon pokemon = new Pokemon();
         BeanUtils.copyProperties(reqVo, pokemon);
+        pokemon.setName(reqVo.getCnName());
         pokemonMapper.insert(pokemon);
 
         // 插入进化关系表
@@ -160,6 +163,8 @@ public class PokemonServiceImpl implements PokemonService {
 
         PokemonDetailRespVo respVo = new PokemonDetailRespVo();
         BeanUtils.copyProperties(pokemon, respVo);
+        // 精灵名称
+        respVo.setCnName(pokemon.getName());
         // 精灵属性
         respVo.setPropertyOneName(getPropertyName(pokemon.getPropertyOne()));
         respVo.setPropertyTwoName(getPropertyName(pokemon.getPropertyTwo()));
@@ -191,6 +196,7 @@ public class PokemonServiceImpl implements PokemonService {
         // 验参 : 精灵存在
         Pokemon pokemon = getPokemon(reqVo.getId());
         BeanUtils.copyProperties(reqVo, pokemon);
+        pokemon.setName(reqVo.getCnName());
         pokemonMapper.updateByPrimaryKey(pokemon);
 
         // 清除精灵进化,技能关系

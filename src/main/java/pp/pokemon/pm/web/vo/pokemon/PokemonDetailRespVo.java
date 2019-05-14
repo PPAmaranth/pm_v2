@@ -13,7 +13,7 @@ public class PokemonDetailRespVo {
 
     private Integer illustrationBookId;
 
-    private String name;
+    private String cnName;
 
     private String jpName;
 
