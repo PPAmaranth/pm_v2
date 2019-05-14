@@ -22,7 +22,7 @@
   </delete>
   <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.EvolvePokemonRel">
     insert into evolve_pokemon_rel (id, pokemon_id, before_id, 
-      condition)
+      `condition`)
     values (#{id,jdbcType=INTEGER}, #{pokemonId,jdbcType=INTEGER}, #{beforeId,jdbcType=INTEGER}, 
       #{condition,jdbcType=VARCHAR})
   </insert>
@@ -39,7 +39,7 @@
         before_id,
       </if>
       <if test="condition != null">
-        condition,
+        `condition`,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -67,7 +67,7 @@
         before_id = #{beforeId,jdbcType=INTEGER},
       </if>
       <if test="condition != null">
-        condition = #{condition,jdbcType=VARCHAR},
+        `condition` = #{condition,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -76,7 +76,7 @@
     update evolve_pokemon_rel
     set pokemon_id = #{pokemonId,jdbcType=INTEGER},
       before_id = #{beforeId,jdbcType=INTEGER},
-      condition = #{condition,jdbcType=VARCHAR}
+      `condition` = #{condition,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPokemonId" resultMap="BaseResultMap">
