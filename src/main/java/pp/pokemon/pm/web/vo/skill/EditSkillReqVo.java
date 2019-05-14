@@ -41,7 +41,7 @@ public class EditSkillReqVo {
 
     @NotNull(message = "是否技能机技能不为空")
     @Max(value = 1, message = "0否, 1是")
-    @Min(value = 1, message = "0否, 1是")
+    @Min(value = 0, message = "0否, 1是")
     private Integer isMachineSkill;
 
     @Length(max = 200, message = "技能机编号长度200")
