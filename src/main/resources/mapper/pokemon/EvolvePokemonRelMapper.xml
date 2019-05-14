@@ -8,7 +8,7 @@
     <result column="condition" jdbcType="VARCHAR" property="condition" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, pokemon_id, before_id, condition
+    id, pokemon_id, before_id, `condition`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 

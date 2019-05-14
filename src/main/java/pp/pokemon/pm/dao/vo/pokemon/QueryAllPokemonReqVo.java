@@ -6,4 +6,6 @@ import pp.pokemon.pm.web.vo.base.BaseReqWithPageVo;
 @Data
 public class QueryAllPokemonReqVo extends BaseReqWithPageVo {
 
+    private String word;
+
 }
