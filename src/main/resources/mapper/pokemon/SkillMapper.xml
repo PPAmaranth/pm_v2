@@ -11,12 +11,13 @@
     <result column="power" jdbcType="VARCHAR" property="power" />
     <result column="hit_probability" jdbcType="VARCHAR" property="hitProbability" />
     <result column="PP" jdbcType="VARCHAR" property="pp" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="is_machine_skill" jdbcType="INTEGER" property="isMachineSkill" />
     <result column="machine_skill_code" jdbcType="VARCHAR" property="machineSkillCode" />
   </resultMap>
   <sql id="Base_Column_List">
     id, cn_name, jp_name, en_name, property, classification, power, hit_probability, 
-    PP, is_machine_skill, machine_skill_code
+    PP, description, is_machine_skill, machine_skill_code
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -31,12 +32,12 @@
   <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.Skill">
     insert into skill (id, cn_name, jp_name, 
       en_name, property, classification, 
-      power, hit_probability, PP, 
+      power, hit_probability, PP, description
       is_machine_skill, machine_skill_code)
     values (#{id,jdbcType=INTEGER}, #{cnName,jdbcType=VARCHAR}, #{jpName,jdbcType=VARCHAR}, 
       #{enName,jdbcType=VARCHAR}, #{property,jdbcType=INTEGER}, #{classification,jdbcType=INTEGER},
       #{power,jdbcType=VARCHAR}, #{hitProbability,jdbcType=VARCHAR}, #{pp,jdbcType=VARCHAR},
-      #{isMachineSkill,jdbcType=INTEGER}, #{machineSkillCode,jdbcType=VARCHAR})
+      #{description,jdbcType=VARCHAR}, #{isMachineSkill,jdbcType=INTEGER}, #{machineSkillCode,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.Skill">
     insert into skill
@@ -67,6 +68,9 @@
       </if>
       <if test="pp != null">
         PP,
+      </if>
+      <if test="description != null">
+        description,
       </if>
       <if test="isMachineSkill != null">
         is_machine_skill,
@@ -103,6 +107,9 @@
       <if test="pp != null">
         #{pp,jdbcType=VARCHAR},
       </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
       <if test="isMachineSkill != null">
         #{isMachineSkill,jdbcType=INTEGER},
       </if>
@@ -138,6 +145,9 @@
       <if test="pp != null">
         PP = #{pp,jdbcType=VARCHAR},
       </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
       <if test="isMachineSkill != null">
         is_machine_skill = #{isMachineSkill,jdbcType=INTEGER},
       </if>
@@ -157,6 +167,7 @@
       power = #{power,jdbcType=VARCHAR},
       hit_probability = #{hitProbability,jdbcType=VARCHAR},
       PP = #{pp,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
       is_machine_skill = #{isMachineSkill,jdbcType=INTEGER},
       machine_skill_code = #{machineSkillCode,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
@@ -171,6 +182,7 @@
           cn_name like concat('%',#{word,jdbcType=VARCHAR},'%')
           or jp_name like concat('%',#{word,jdbcType=VARCHAR},'%')
           or en_name like concat('%',#{word,jdbcType=VARCHAR},'%')
+          or description like concat('%',#{word,jdbcType=VARCHAR},'%')
         )
       </if>
       <if test="property != null">

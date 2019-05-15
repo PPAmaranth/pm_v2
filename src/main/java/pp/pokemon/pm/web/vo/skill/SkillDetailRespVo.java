@@ -1,6 +1,9 @@
 package pp.pokemon.pm.web.vo.skill;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
 
 
 @Data
@@ -27,6 +30,8 @@ public class SkillDetailRespVo {
     private String hitProbability;
 
     private String pp;
+
+    private String description;
 
     private Integer isMachineSkill;
 

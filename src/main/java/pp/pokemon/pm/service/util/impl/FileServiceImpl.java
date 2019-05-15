@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import pp.pokemon.pm.common.constant.RetException;
@@ -15,6 +14,7 @@ import pp.pokemon.pm.common.enums.file.DownloadType;
 import pp.pokemon.pm.common.enums.file.FileModule;
 import pp.pokemon.pm.common.message.FileMessage;
 import pp.pokemon.pm.common.message.PokemonMessage;
+import pp.pokemon.pm.common.util.collection.CollectionUtil;
 import pp.pokemon.pm.common.util.file.DeleteObject;
 import pp.pokemon.pm.common.util.file.OssUtil;
 import pp.pokemon.pm.common.util.file.PutObject;
@@ -85,7 +85,7 @@ public class FileServiceImpl implements FileService {
     public List<Attachment> publicBatchUpload(HttpServletRequest request) {
         // 将文件流转为文件列表
         List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
-        if (CollectionUtils.isEmpty(files)) {
+        if (CollectionUtil.isEmpty(files)) {
             throw new RetException(FileMessage.OSS_UPLOAD_FAILURE_CODE, FileMessage.OSS_UPLOAD_FAILURE_MSG);
         }
 

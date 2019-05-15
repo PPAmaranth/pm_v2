@@ -2,6 +2,7 @@ package pp.pokemon.pm.service.pokemon;
 
 import com.github.pagehelper.PageInfo;
 import pp.pokemon.pm.dao.vo.file.BatchInsertPokemonVo;
+import pp.pokemon.pm.dao.vo.file.BatchUpdateNameVo;
 import pp.pokemon.pm.dao.vo.pokemon.*;
 import pp.pokemon.pm.web.vo.pokemon.*;
 
@@ -13,6 +14,8 @@ public interface PokemonService {
 
     void batchInsertPokemon(List<BatchInsertPokemonVo> pokemons);
 
+    void batchUpdateName(List<BatchUpdateNameVo> names);
+
     List<PokemonAttachmentRespVo> getPokemonAttachment(PokemonAttachmentReqVo reqVo);
 
     void add(AddPokemonReqVo reqVo);
@@ -22,4 +25,5 @@ public interface PokemonService {
     void edit(EditPokemonReqVo reqVo);
 
     void delete(PokemonDeleteReqVo reqVo);
+
 }

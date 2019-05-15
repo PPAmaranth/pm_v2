@@ -9,7 +9,7 @@ public class EvolutionRelationshipRespVo {
 
     private Integer id;
 
-    private String name;
+    private String cnName;
 
     private String condition;
 

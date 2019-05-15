@@ -39,6 +39,10 @@ public class EditSkillReqVo {
     @NotNull(message = "pp不为空")
     private Integer pp;
 
+    @NotNull(message = "技能描述不为空")
+    @Length(max = 200, message = "技能描述长度200")
+    private String description;
+
     @NotNull(message = "是否技能机技能不为空")
     @Max(value = 1, message = "0否, 1是")
     @Min(value = 0, message = "0否, 1是")

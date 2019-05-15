@@ -5,7 +5,7 @@ public class Pokemon {
 
     private Integer illustrationBookId;
 
-    private String name;
+    private String cnName;
 
     private String jpName;
 
@@ -45,12 +45,12 @@ public class Pokemon {
         this.illustrationBookId = illustrationBookId;
     }
 
-    public String getName() {
-        return name;
+    public String getCnName() {
+        return cnName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCnName(String cnName) {
+        this.cnName = cnName;
     }
 
     public String getJpName() {

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import pp.pokemon.pm.common.util.BeanValidators;
+import pp.pokemon.pm.dao.vo.file.BatchUpdateNameVo;
 import pp.pokemon.pm.web.vo.pokemon.AddPokemonReqVo;
 import pp.pokemon.pm.web.vo.pokemon.EditPokemonReqVo;
 import pp.pokemon.pm.web.vo.pokemon.PokemonDeleteReqVo;
@@ -34,6 +35,12 @@ public class PokemonController extends BaseController {
     @RequestMapping(value = "/batchInsertPokemon", method = {RequestMethod.POST})
     public DefaultApiResult batchInsertPokemon(@RequestBody List<BatchInsertPokemonVo> pokemons){
         pokemonService.batchInsertPokemon(pokemons);
+        return success();
+    }
+
+    @RequestMapping(value = "/batchUpdateName", method = {RequestMethod.POST})
+    public DefaultApiResult batchUpdateName(@RequestBody List<BatchUpdateNameVo> names){
+        pokemonService.batchUpdateName(names);
         return success();
     }
 

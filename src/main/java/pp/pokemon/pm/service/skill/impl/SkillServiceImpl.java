@@ -6,11 +6,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import pp.pokemon.pm.common.constant.RetException;
 import pp.pokemon.pm.common.enums.common.YesNo;
 import pp.pokemon.pm.common.enums.skill.SkillClassification;
 import pp.pokemon.pm.common.message.SkillMessage;
+import pp.pokemon.pm.common.util.collection.CollectionUtil;
 import pp.pokemon.pm.dao.entity.pokemon.Property;
 import pp.pokemon.pm.dao.entity.pokemon.Skill;
 import pp.pokemon.pm.dao.mapper.pokemon.PropertyMapper;
@@ -105,7 +105,7 @@ public class SkillServiceImpl implements SkillService {
     public void batchAdd(List<BatchAddSkillReqVo> reqVos) {
         List<Property> properties = propertyMapper.selectByParam(new PropertyListReqVo());
 
-        if (!CollectionUtils.isEmpty(reqVos)) {
+        if (CollectionUtil.isNotEmpty(reqVos)) {
             reqVos.stream().forEach(reqVo -> {
                 Skill skill = new Skill();
                 skill.setCnName(reqVo.getCn_name());

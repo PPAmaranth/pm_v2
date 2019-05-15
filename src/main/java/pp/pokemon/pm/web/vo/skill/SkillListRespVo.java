@@ -27,6 +27,8 @@ public class SkillListRespVo {
 
     private String pp;
 
+    private String description;
+
     private Integer isMachineSkill;
 
     private String machineSkillCode;

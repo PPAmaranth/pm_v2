@@ -19,6 +19,8 @@ public class Skill {
 
     private String pp;
 
+    private String description;
+
     private Integer isMachineSkill;
 
     private String machineSkillCode;
@@ -93,6 +95,14 @@ public class Skill {
 
     public void setPp(String pp) {
         this.pp = pp;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getIsMachineSkill() {

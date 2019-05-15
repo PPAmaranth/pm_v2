@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="pp.pokemon.pm.dao.entity.pokemon.Pokemon">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="illustration_book_id" jdbcType="INTEGER" property="illustrationBookId" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="cn_name" jdbcType="VARCHAR" property="cnName" />
     <result column="jp_name" jdbcType="VARCHAR" property="jpName" />
     <result column="en_name" jdbcType="VARCHAR" property="enName" />
     <result column="hp" jdbcType="INTEGER" property="hp" />
@@ -18,7 +18,7 @@
     <result column="ethnic_value" jdbcType="INTEGER" property="ethnicValue" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, illustration_book_id, name, jp_name, en_name, hp, attack, defense, s_attack, 
+    id, illustration_book_id, cn_name, jp_name, en_name, hp, attack, defense, s_attack,
     s_defense, property_one, property_two, speed, ethnic_value
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -32,12 +32,12 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.Pokemon" useGeneratedKeys="true" keyProperty="id">
-    insert into pokemon (id, illustration_book_id, name, 
+    insert into pokemon (id, illustration_book_id, cn_name,
       jp_name, en_name, hp, 
       attack, defense, s_attack, 
       s_defense, property_one, property_two, 
       speed, ethnic_value)
-    values (#{id,jdbcType=INTEGER}, #{illustrationBookId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{illustrationBookId,jdbcType=INTEGER}, #{cnName,jdbcType=VARCHAR},
       #{jpName,jdbcType=VARCHAR}, #{enName,jdbcType=VARCHAR}, #{hp,jdbcType=INTEGER}, 
       #{attack,jdbcType=INTEGER}, #{defense,jdbcType=INTEGER}, #{sAttack,jdbcType=INTEGER}, 
       #{sDefense,jdbcType=INTEGER}, #{propertyOne,jdbcType=INTEGER}, #{propertyTwo,jdbcType=INTEGER}, 
@@ -52,8 +52,8 @@
       <if test="illustrationBookId != null">
         illustration_book_id,
       </if>
-      <if test="name != null">
-        name,
+      <if test="cnName != null">
+        cn_name,
       </if>
       <if test="jpName != null">
         jp_name,
@@ -96,8 +96,8 @@
       <if test="illustrationBookId != null">
         #{illustrationBookId,jdbcType=INTEGER},
       </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
+      <if test="cnName != null">
+        #{cnName,jdbcType=VARCHAR},
       </if>
       <if test="jpName != null">
         #{jpName,jdbcType=VARCHAR},
@@ -140,8 +140,8 @@
       <if test="illustrationBookId != null">
         illustration_book_id = #{illustrationBookId,jdbcType=INTEGER},
       </if>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
+      <if test="cnName != null">
+        cn_name = #{cnName,jdbcType=VARCHAR},
       </if>
       <if test="jpName != null">
         jp_name = #{jpName,jdbcType=VARCHAR},
@@ -182,7 +182,7 @@
   <update id="updateByPrimaryKey" parameterType="pp.pokemon.pm.dao.entity.pokemon.Pokemon">
     update pokemon
     set illustration_book_id = #{illustrationBookId,jdbcType=INTEGER},
-      name = #{name,jdbcType=VARCHAR},
+      cn_name = #{cnName,jdbcType=VARCHAR},
       jp_name = #{jpName,jdbcType=VARCHAR},
       en_name = #{enName,jdbcType=VARCHAR},
       hp = #{hp,jdbcType=INTEGER},
@@ -203,7 +203,7 @@
     <where>
       <if test="word != null and word.size() > 0">
         (
-          `name` like concat('%', #{word,jdbcType=VARCHAR}, '%')
+          cn_name like concat('%', #{word,jdbcType=VARCHAR}, '%')
           or jp_name like concat('%', #{word,jdbcType=VARCHAR}, '%')
           or en_name like concat('%', #{word,jdbcType=VARCHAR}, '%')
         )
