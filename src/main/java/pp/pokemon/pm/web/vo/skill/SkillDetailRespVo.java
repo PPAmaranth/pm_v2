@@ -1,9 +1,6 @@
 package pp.pokemon.pm.web.vo.skill;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.NotNull;
 
 
 @Data

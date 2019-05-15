@@ -31,15 +31,13 @@ public class SkillController extends BaseController {
     @RequestMapping(value = "/add", method = {RequestMethod.POST})
     public DefaultApiResult add(@RequestBody AddSkillReqVo reqVo) {
         BeanValidators.validateWithParameterException(validator, reqVo);
-        skillService.add(reqVo);
-        return success();
+        return success(skillService.add(reqVo));
     }
 
     @RequestMapping(value = "/edit", method = {RequestMethod.POST})
     public DefaultApiResult edit(@RequestBody EditSkillReqVo reqVo) {
         BeanValidators.validateWithParameterException(validator, reqVo);
-        skillService.edit(reqVo);
-        return success();
+        return success(skillService.edit(reqVo));
     }
 
     @RequestMapping(value = "/delete", method = {RequestMethod.POST})

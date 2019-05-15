@@ -61,18 +61,20 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void add(AddSkillReqVo reqVo) {
+    public Skill add(AddSkillReqVo reqVo) {
         Skill skill = new Skill();
         BeanUtils.copyProperties(reqVo, skill);
         skillMapper.insert(skill);
+        return skill;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void edit(EditSkillReqVo reqVo) {
+    public Skill edit(EditSkillReqVo reqVo) {
         Skill skill = getSkill(reqVo.getId());
         BeanUtils.copyProperties(reqVo, skill);
         skillMapper.updateByPrimaryKey(skill);
+        return skill;
     }
 
     @Override
@@ -83,7 +85,7 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public SkillDetailRespVo detail(SkillDetailReqVo reqVo) {
-        Skill skill = getSkill(reqVo.getId());
+        Skill skill = getSkillWithoutValidation(reqVo.getId());
         SkillDetailRespVo respVo = new SkillDetailRespVo();
         BeanUtils.copyProperties(skill, respVo);
         // 属性名
@@ -141,9 +143,20 @@ public class SkillServiceImpl implements SkillService {
 
 
     /**
-     * 根据skill_id获取skill
+     * 根据skill_id获取skill, 如果skill不存在则抛出错误
      */
     private Skill getSkill(Integer skillId) {
+        return Optional.ofNullable(skillMapper.selectByPrimaryKey(skillId))
+                .orElseThrow(() -> new RetException(SkillMessage.INVALID_SKILL_CODE, SkillMessage.INVALID_SKILL_MSG));
+    }
+
+    /**
+     * 根据skill_id获取skill, 如果skill_id为null则返回空skill对象, 如果skill不存在则抛出错误
+     */
+    private Skill getSkillWithoutValidation(Integer skillId) {
+        if (null == skillId) {
+            return new Skill();
+        }
         return Optional.ofNullable(skillMapper.selectByPrimaryKey(skillId))
                 .orElseThrow(() -> new RetException(SkillMessage.INVALID_SKILL_CODE, SkillMessage.INVALID_SKILL_MSG));
     }

@@ -1,6 +1,7 @@
 package pp.pokemon.pm.service.skill;
 
 import com.github.pagehelper.PageInfo;
+import pp.pokemon.pm.dao.entity.pokemon.Skill;
 import pp.pokemon.pm.dao.vo.skill.BatchAddSkillReqVo;
 import pp.pokemon.pm.dao.vo.skill.QuerySkillListReqVo;
 import pp.pokemon.pm.dao.vo.skill.SimpleSkillListReqVo;
@@ -12,9 +13,9 @@ import java.util.List;
 public interface SkillService {
     PageInfo<SkillListRespVo> list(QuerySkillListReqVo reqVo);
 
-    void add(AddSkillReqVo reqVo);
+    Skill add(AddSkillReqVo reqVo);
 
-    void edit(EditSkillReqVo reqVo);
+    Skill edit(EditSkillReqVo reqVo);
 
     void delete(DeleteSkillReqVo reqVo);
 

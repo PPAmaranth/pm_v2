@@ -29,7 +29,7 @@
     delete from skill
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.Skill">
+  <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.Skill" useGeneratedKeys="true" keyProperty="id">
     insert into skill (id, cn_name, jp_name, 
       en_name, property, classification, 
       power, hit_probability, PP, description
@@ -39,7 +39,7 @@
       #{power,jdbcType=VARCHAR}, #{hitProbability,jdbcType=VARCHAR}, #{pp,jdbcType=VARCHAR},
       #{description,jdbcType=VARCHAR}, #{isMachineSkill,jdbcType=INTEGER}, #{machineSkillCode,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.Skill">
+  <insert id="insertSelective" parameterType="pp.pokemon.pm.dao.entity.pokemon.Skill"  useGeneratedKeys="true" keyProperty="id">
     insert into skill
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
