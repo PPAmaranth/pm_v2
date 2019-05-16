@@ -30,14 +30,14 @@ public class EditSkillReqVo {
     @NotNull(message = "技能分类不为空")
     private Integer classification;
 
-    @NotNull(message = "技能威力不为空")
-    private Integer power;
+    @NotBlank(message = "技能威力不为空")
+    private String power;
 
-    @NotNull(message = "命中几率不为零")
-    private Integer hitProbability;
+    @NotBlank(message = "命中几率不为零")
+    private String hitProbability;
 
-    @NotNull(message = "pp不为空")
-    private Integer pp;
+    @NotBlank(message = "pp不为空")
+    private String pp;
 
     @NotNull(message = "技能描述不为空")
     @Length(max = 200, message = "技能描述长度200")
