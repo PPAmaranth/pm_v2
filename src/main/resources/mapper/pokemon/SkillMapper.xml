@@ -32,7 +32,7 @@
   <insert id="insert" parameterType="pp.pokemon.pm.dao.entity.pokemon.Skill" useGeneratedKeys="true" keyProperty="id">
     insert into skill (id, cn_name, jp_name, 
       en_name, property, classification, 
-      power, hit_probability, PP, description
+      power, hit_probability, PP, description,
       is_machine_skill, machine_skill_code)
     values (#{id,jdbcType=INTEGER}, #{cnName,jdbcType=VARCHAR}, #{jpName,jdbcType=VARCHAR}, 
       #{enName,jdbcType=VARCHAR}, #{property,jdbcType=INTEGER}, #{classification,jdbcType=INTEGER},
