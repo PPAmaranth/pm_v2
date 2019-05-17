@@ -73,7 +73,7 @@
       <include refid="Base_Column_List" />
     from property
     <where>
-      <if test="word != null and word.size() > 0">
+      <if test="word != null and word != ''">
         (
           name like concat('%',#{word,jdbcType=VARCHAR},'%')
           or en_name like concat('%',#{word,jdbcType=VARCHAR},'%')
