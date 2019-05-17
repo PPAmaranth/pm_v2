@@ -177,7 +177,7 @@
     <include refid="Base_Column_List" />
     from skill
     <where>
-      <if test="word != null and word.size() > 0">
+      <if test=" word != null and word != '' ">
         (
           cn_name like concat('%',#{word,jdbcType=VARCHAR},'%')
           or jp_name like concat('%',#{word,jdbcType=VARCHAR},'%')
