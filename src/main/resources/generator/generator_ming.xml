@@ -3,7 +3,7 @@
 <generatorConfiguration>
     <!-- 数据库驱动包位置 -->
     <classPathEntry location="/Users/luluming/.m2/repository/mysql/mysql-connector-java/8.0.11/mysql-connector-java-8.0.11.jar" />
-    <context id="DB2Tables" targetRuntime="MyBatis3">
+    <context id="mysql" targetRuntime="MyBatis3">
         <commentGenerator>
             <property name="suppressAllComments" value="true" />
         </commentGenerator>
@@ -16,25 +16,25 @@
             <property name="forceBigDecimals" value="false" />
         </javaTypeResolver>
         <!-- 生成模型的包名和位置 -->
-        <javaModelGenerator targetPackage="pp.pokemon.pm.dao.entity.pokemon"
-                            targetProject="/Users/luluming/project/ming/pp/pm_v2/src/main/java">
-            <property name="enableSubPackages" value="true" />
+        <javaModelGenerator targetPackage="pp.pokemon.pm.dao.entity.member"
+                            targetProject="/Users/luluming/Documents/project/ming/pp/pm_v2/src/main/java">
+            <property name="enableSubPackages" value="false" />
             <property name="trimStrings" value="false" />
         </javaModelGenerator>
         <!-- 生成的Mapper映射文件包名和位置 -->
-        <sqlMapGenerator targetPackage="pokemon"
-                         targetProject="/Users/luluming/project/ming/pp/pm_v2/src/main/resources/mapper">
-            <property name="enableSubPackages" value="true" />
+        <sqlMapGenerator targetPackage="member"
+                         targetProject="/Users/luluming/Documents/project/ming/pp/pm_v2/src/main/resources/mapper">
+            <property name="enableSubPackages" value="false" />
         </sqlMapGenerator>
         <!-- 生成Mapper接口包名和位置 -->
         <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="pp.pokemon.pm.dao.mapper.pokemon"
-                             targetProject="/Users/luluming/project/ming/pp/pm_v2/src/main/java">
-            <property name="enableSubPackages" value="true" />
+                             targetPackage="pp.pokemon.pm.dao.mapper.member"
+                             targetProject="/Users/luluming/Documents/project/ming/pp/pm_v2/src/main/java">
+            <property name="enableSubPackages" value="false" />
         </javaClientGenerator>
 
 
-        <table tableName="machine_skill_rel" domainObjectName="MachineSkillRel"
+        <table tableName="member" domainObjectName="Member"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false" />

@@ -80,7 +80,9 @@ public class SkillServiceImpl implements SkillService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delete(DeleteSkillReqVo reqVo) {
-        skillMapper.deleteByPrimaryKey(reqVo.getId());
+        // 验参 : 技能存在
+        Skill skill = getSkill(reqVo.getId());
+        skillMapper.deleteByPrimaryKey(skill.getId());
     }
 
     @Override

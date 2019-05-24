@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import pp.pokemon.pm.common.aop.memberAccess.MemberAccess;
 import pp.pokemon.pm.common.util.BeanValidators;
 import pp.pokemon.pm.dao.vo.file.BatchUpdateNameVo;
 import pp.pokemon.pm.web.vo.pokemon.AddPokemonReqVo;
