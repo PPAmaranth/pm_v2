@@ -35,4 +35,7 @@ public class SecurityMessage {
     public static final String INCORRECT_PASSWORD_CODE = "50011";
     public static final String INCORRECT_PASSWORD_MSG = "密码错误";
 
+    public static final String INCORRECT_OLD_PASSWORD_CODE = "50012";
+    public static final String INCORRECT_OLD_PASSWORD_MSG = "旧密码错误";
+
 }

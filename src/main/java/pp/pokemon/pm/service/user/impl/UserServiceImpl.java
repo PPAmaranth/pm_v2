@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pp.pokemon.pm.common.aop.memberAccess.MemberAccessDetail;
+import pp.pokemon.pm.common.aop.userAccess.UserAccessDetail;
+import pp.pokemon.pm.common.aop.userAccess.RestContext;
 import pp.pokemon.pm.common.constant.RetException;
 import pp.pokemon.pm.common.enums.common.YesNo;
+import pp.pokemon.pm.common.enums.user.UserStatus;
 import pp.pokemon.pm.common.message.SecurityMessage;
 import pp.pokemon.pm.common.util.security.EncryptUtil;
 import pp.pokemon.pm.common.util.security.RsaUtil;
@@ -18,9 +20,7 @@ import pp.pokemon.pm.common.util.security.TokenUtil;
 import pp.pokemon.pm.dao.entity.user.User;
 import pp.pokemon.pm.dao.mapper.user.UserMapper;
 import pp.pokemon.pm.service.user.UserService;
-import pp.pokemon.pm.web.vo.user.UserLoginReqVo;
-import pp.pokemon.pm.web.vo.user.UserLoginRespVo;
-import pp.pokemon.pm.web.vo.user.UserRegistrationReqVo;
+import pp.pokemon.pm.web.vo.user.*;
 
 import java.util.Date;
 import java.util.Map;
@@ -46,6 +46,10 @@ public class UserServiceImpl implements UserService {
 
     private static final Integer REMEMBER_ME_LOGIN_SECONDS = 604800;
 
+    /**
+     * 用户注册
+     * @param reqVo
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void register(UserRegistrationReqVo reqVo) {
@@ -58,7 +62,7 @@ public class UserServiceImpl implements UserService {
         String decryptPw = RsaUtil.decrypt(privateKey, reqVo.getPassword());
         user.setPassword(EncryptUtil.encryptPw(decryptPw));
         // 账号状态为启用
-        user.setStatus(YesNo.YES.getId());
+        user.setStatus(UserStatus.ENABLED.getValue());
         user.setCreateDate(new Date());
         user.setUpdateDate(user.getCreateDate());
 
@@ -104,6 +108,11 @@ public class UserServiceImpl implements UserService {
                 });
     }
 
+    /**
+     * 用户登录, 返回token
+     * @param reqVo
+     * @return
+     */
     @Override
     public UserLoginRespVo login(UserLoginReqVo reqVo) {
         // 验参 : 用户存在且用户已启用
@@ -128,24 +137,95 @@ public class UserServiceImpl implements UserService {
         // 创建登录信息
         Integer seconds = reqVo.getRememberMe().equals(YesNo.YES.getId()) ? REMEMBER_ME_LOGIN_SECONDS : COMMON_LOGIN_SECONDS;
 
-        MemberAccessDetail detail = new MemberAccessDetail();
+        UserAccessDetail detail = new UserAccessDetail();
         detail.setUserId(user.getId());
         detail.setRememberMe(reqVo.getRememberMe());
         detail.setLoginExpireSeconds(seconds);
 
         // 创建缓存
-        Cache<String, MemberAccessDetail> cache = Caffeine.newBuilder()
+        Cache<String, UserAccessDetail> cache = Caffeine.newBuilder()
                 .expireAfterWrite(seconds, TimeUnit.SECONDS)
                 .build();
         cache.put(token, detail);
         // 更新缓存
-        Map<String, Cache<String, MemberAccessDetail>> cacheMap = TokenUtil.getMap();
+        Map<String, Cache<String, UserAccessDetail>> cacheMap = TokenUtil.getMap();
         cacheMap.put(token, cache);
 
         // 返回token
         UserLoginRespVo respVo = new UserLoginRespVo();
         respVo.setToken(token);
         return respVo;
+    }
+
+    /**
+     * 根据token, GET方法请求账号信息
+     * @return
+     */
+    @Override
+    public UserInfoRespVo info() {
+        User user = getUser(RestContext.getUserId());
+        UserInfoRespVo respVo = new UserInfoRespVo();
+        BeanUtils.copyProperties(user, respVo);
+        // 状态名称
+        if (UserStatus.ENABLED.getValue().equals(user.getStatus())) {
+            respVo.setStatusName(UserStatus.ENABLED.getDescription());
+        }
+        if (UserStatus.DISABLED.getValue().equals(user.getStatus())) {
+            respVo.setStatusName(UserStatus.DISABLED.getDescription());
+        }
+        return respVo;
+    }
+
+    /**
+     * 编辑账号信息
+     * @param reqVo
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void editInfo(UserEditInfoReqVo reqVo) {
+        // 验参 : 手机邮箱用户名格式正确, 且并未使用
+        checkRegistrationParam(reqVo.getUsername(), reqVo.getMobile(), reqVo.getEmail(), RestContext.getUserId());
+        // 验参 : 用户存在
+        User user = getUser(RestContext.getUserId());
+
+        user.setUsername(reqVo.getUsername());
+        user.setMobile(reqVo.getMobile());
+        user.setEmail(reqVo.getEmail());
+        user.setUpdateDate(new Date());
+        userMapper.updateByPrimaryKey(user);
+    }
+
+    /**
+     * 修改密码
+     * @param reqVo
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void editPassword(UserEditPasswordReqVo reqVo) {
+        // 验参 : 用户存在
+        User user = getUser(RestContext.getUserId());
+        // 验参 : 旧密码正确
+        String decryptOldPw = RsaUtil.decrypt(privateKey, reqVo.getOldPassword());
+        String encryptOldPw = EncryptUtil.encryptPw(decryptOldPw);
+        if (!user.getPassword().equals(encryptOldPw)) {
+            throw new RetException(SecurityMessage.INCORRECT_OLD_PASSWORD_CODE, SecurityMessage.INCORRECT_OLD_PASSWORD_MSG);
+        }
+
+        String decryptNewPw = RsaUtil.decrypt(privateKey, reqVo.getNewPassword());
+        String encryptNewPw = EncryptUtil.encryptPw(decryptNewPw);
+        user.setPassword(encryptNewPw);
+        user.setUpdateDate(new Date());
+        userMapper.updateByPrimaryKey(user);
+    }
+
+    /**
+     * 根据userId获取user
+     * @param userId
+     * @return
+     */
+    private User getUser(Integer userId) {
+        return Optional.ofNullable(userMapper.selectByPrimaryKey(userId))
+                .orElseThrow(() -> new RetException(SecurityMessage.INVALID_USER_CODE, SecurityMessage.INVALID_USER_MSG));
     }
 
 }

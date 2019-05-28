@@ -1,4 +1,4 @@
-package pp.pokemon.pm.common.aop.memberAccess;
+package pp.pokemon.pm.common.aop.userAccess;
 
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Component
-public @interface MemberAccess {
+public @interface UserAccess {
 
     /**
      * 登录严格模式, 默认为true, token不存在则抛出错误; false时无token也可以调用接口

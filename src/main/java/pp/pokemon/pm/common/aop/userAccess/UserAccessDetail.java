@@ -1,9 +1,9 @@
-package pp.pokemon.pm.common.aop.memberAccess;
+package pp.pokemon.pm.common.aop.userAccess;
 
 import lombok.Data;
 
 @Data
-public class MemberAccessDetail {
+public class UserAccessDetail {
 
     private Integer userId;
 

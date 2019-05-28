@@ -1,4 +1,4 @@
-package pp.pokemon.pm.common.aop.memberAccess;
+package pp.pokemon.pm.common.aop.userAccess;
 
 import pp.pokemon.pm.common.constant.RetException;
 import pp.pokemon.pm.common.message.SecurityMessage;

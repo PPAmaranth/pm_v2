@@ -1,8 +1,6 @@
 package pp.pokemon.pm.service.user;
 
-import pp.pokemon.pm.web.vo.user.UserLoginReqVo;
-import pp.pokemon.pm.web.vo.user.UserLoginRespVo;
-import pp.pokemon.pm.web.vo.user.UserRegistrationReqVo;
+import pp.pokemon.pm.web.vo.user.*;
 
 public interface UserService {
 
@@ -10,4 +8,9 @@ public interface UserService {
 
     UserLoginRespVo login(UserLoginReqVo reqVo);
 
+    UserInfoRespVo info();
+
+    void editInfo(UserEditInfoReqVo reqVo);
+
+    void editPassword(UserEditPasswordReqVo reqVo);
 }
